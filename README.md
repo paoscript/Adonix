@@ -50,9 +50,9 @@ npm i
 - En el archivo ".env" colocar la siguiente información con los datos segun su caso:
 ```
 HOST_DATABASE="<<host de tu Base de Datos>>"
-USER_DATABASE="Nombre de usuario de tu base de datos"
-PASSWORD_USER_DATABASE="Contraseña del usuario de tu base de datos"
-NAME_DATABASE="Nombre de la base de datos Adonix"
+USER_DATABASE="<<Nombre de usuario de tu base de datos>>"
+PASSWORD_USER_DATABASE="<<Contraseña del usuario de tu base de datos>>"
+NAME_DATABASE="<<Nombre de la base de datos Adonix>>"
 ```
 - Ejecutar en la terminal el siguiente comando
 ```
