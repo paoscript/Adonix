@@ -1,0 +1,143 @@
+<!-- Consultar Usuarios -->
+
+<br>
+<div class="container">
+
+
+    <div class="col-md-20">
+        <h4>Consult Users</h4>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-7"></div>
+                <div class="col-5 ">
+                    <div class="container">
+                        <button type="button" class="btn btn-success btn-icon-text"
+                            onclick="window.location.href='/users/create/'">
+                            <i class="fa-solid fa-plus"></i> Create New Record
+                        </button>
+                        <button type="button" class="btn btn-warning btn-icon-text">
+                            <i class="fa-solid fa-download"></i>
+                            Download Records
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-8">
+                    {{!-- <div class="row">
+                        <p>Show &nbsp</p>
+                        <select style="height: 20px;">
+                            <option>10</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                        <p>&nbsprecords</p>
+                    </div> --}}
+                </div>
+
+                <div class="col-3 ">
+                    <div class="input-group rounded">
+                        <input type="search" class="form-control rounded" placeholder="Search 🔍" aria-label="Search"
+                            aria-describedby="search-addon" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="table-responsive">
+
+
+                <table id="mytable" class="table table-bordred table-striped">
+
+                    <thead>
+
+                        <th><input type="checkbox" id="checkall" /></th>
+                        <th>Number Identification</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </thead>
+                    <tbody>
+                        {{#each listUsers}}
+                        <tr>
+                            <td><input type="checkbox" class="checkthis" /></td>
+                            <td>{{use_identification_number}}</td>
+                            <td>{{use_name}}</td>
+                            <td>{{use_email}}</td>
+                            <td>{{use_rol_id}}</td>
+                            <td>
+                                <p data-placement="top" data-toggle="tooltip" title="Edit"><button onclick="window.location.href='/users/edit/{{use_id}}/'"
+                                        class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
+                                        data-target="#edit"><span><i class="fa-solid fa-pen-clip"></i></span></button>
+                                </p>
+                            </td>
+                            <td>
+                                <p data-placement="top" data-toggle="tooltip" title="Delete"><button onclick="deleteRecord({{use_id}})"
+                                        class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
+                                        data-target="#delete"><span><i
+                                                class="fa-solid fa-trash-can"></i></span></button></p>
+                            </td>
+                        </tr>
+                        {{/each}}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-9 ">
+                    <p>Showing 1 to 10 of {{countRecords}} entries</p>
+                </div>
+                <div class="col-1 ">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            {{#each pagination}}
+                            <li class="page-item"><a class="page-link" href="#">{{number}}</a></li>
+                            {{/each}}
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function deleteRecord(idUser) {
+
+        var result = confirm('Are you sure you want to delete this record?');
+
+        if (result) {
+            var url = "http://localhost:80/users/delete/" + idUser;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url);
+
+            xhr.onreadystatechange = function () {
+            };
+
+            xhr.send();
+
+            location.reload()
+        }       
+        
+    }
+</script>

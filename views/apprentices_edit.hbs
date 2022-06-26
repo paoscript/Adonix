@@ -1,0 +1,373 @@
+<!-- Formulario -->
+<div class="col-11 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Update apprentice</h4>
+            <form class="form-sample" id="updateApprentice" action="/apprentices/update/{{apprentice.app_id}}" method="post">
+                <p class="card-description">
+                    Please fill in the following information 📝
+                </p>
+                <div class="row ">
+                    <div class="col-md-9">
+
+                    </div>
+                    <div class="form-group row">
+                        <div class="container">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Cancel</button>
+                        </div>
+                    </div>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <div class="form-group row">
+                        <div class="container">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#submitModal">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Identification</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="CC or TI" name="identification" id="identification" value="{{apprentice.app_identification}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">ID CCMS</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" placeholder="Number ID" name="idCCMS" itemid="idCCMS" value="{{apprentice.app_ccms_id}}"
+                                       id="idCcms" required />
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid city.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="Complete name" id="name" name="name" value="{{apprentice.app_name}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Group</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" placeholder="Number" id="group" name="group" value="{{apprentice.app_group}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">SGVA</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="sgva" name="sgva">
+                                    <option value="{{apprentice.app_sgva}}">{{svga}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">CECO</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" placeholder="Number" name="ceco" id="ceco" value="{{apprentice.app_ceco_id}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Job Description</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="Description" name="jobDescription" id="jobDescription" value="{{apprentice.app_job_description}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Related Position</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="Related" name="relatedPosition" value="{{apprentice.app_related_position}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Payment</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" placeholder="$ SMLV" name="payment" id="payment" value="{{apprentice.app_sustaninig_support}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">BirthDay</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" name="birthDay" id="birthday" value="{{birthday}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Address</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="Address" name="address" id="address" value="{{apprentice.app_address}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">E-Mail</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" placeholder="E-mail"  name="email" id="email" value="{{apprentice.app_email}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">EPS</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="EPS" name="eps" id="eps" value="{{apprentice.app_eps}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">City</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="City" name="city" id="city" value="{{apprentice.app_city}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Institutions</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="Institutions" name="institution" id="institution" value="{{apprentice.app_institutions}}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Specility</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="Specility" name="specility" id="specility" value="{{apprentice.app_speciality}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Name Boss</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="Direct Boss" name="nameBoss" id="nameBoss" value="{{apprentice.app_name_boss}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">ID CCMS Boss</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" placeholder=" ID CCMS Boss" name="ccmsBoss" id="ccmsBoss" value="{{apprentice.app_id_ccms_boss}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Category</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="category" id="category">
+                                    <option>{{apprentice.app_category}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Yielded</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="yielded" id="yielded">
+                                    <option>{{apprentice.app_yielded}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">State</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="state" id="state">
+                                    <option>{{apprentice.app_state}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Company</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="company" id="company" value="{{apprentice.app_company}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Contract Start Date</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" name="contratStartDate" id="contratStartDate" value="{{contratStartDate}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">End Date Of Study</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" name="endDateStudy" id="endDateStudy" value="{{endDateStudy}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Productive Start Date</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" name="productiveStartDate" id="productiveStartDate" value="{{productiveStartDate}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Productive End Date</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" name="productiveEndDate" id="productiveEndDate" onchange="calcularDias()" value="{{productiveEndDate}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Count Days</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" readonly name="countDays" id="countDays" value="{{apprentice.app_count_days}}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Phone Number</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" value="{{apprentice.app_phone_number}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-md-center">
+                    <div class="form-group row">
+                        <div class="container p-10">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Cancel</button>
+                        </div>
+                    </div>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <div class="form-group row">
+                        <div class="container p-10">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#submitModal">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+
+        </div>
+
+        <!-- Modals-->
+
+        <!-- Cancel -->
+        <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cancel Record</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to cancel the creation of the current record?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="window.location.href='/'">Cancel Creation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Submit Record</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to send the current record?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="enviarFormulario()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function enviarFormulario() {
+        document.getElementById("updateApprentice").submit();
+    }
+
+    function calcularDias() {
+        var fechaini = new Date(document.getElementById('contratStartDate').value + 'T00:00');
+        var fechafin = new Date(document.getElementById('productiveEndDate').value + 'T00:00');
+        var diasdif= fechafin.getTime()-fechaini.getTime();
+        var contdias = Math.round(diasdif/(1000*60*60*24));
+        
+        var inputProductiveEndDate = document.getElementById('productiveEndDate');
+
+        document.getElementById('countDays').setAttribute('value', contdias + 1) 
+      
+    }
+</script>

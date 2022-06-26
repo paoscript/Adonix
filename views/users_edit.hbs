@@ -1,0 +1,155 @@
+<div class="main-panel">
+    <!-- Formulario -->
+    <div class="col-10 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Edit User</h4>
+                <form class="form-sample" id="updateUser" action="/users/update/{{user.use_id}}" method="post">
+                    <p class="card-description">
+                        Please fill in the following information 📝
+                    </p>
+                    <div class="row ">
+                        <div class="form-group row">
+                            <div class="container">
+
+                            </div>
+                        </div>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Identification</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="CC or TI" name="identification" id="identification"
+                                        value="{{user.use_identification_number}}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Password</label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" placeholder="Password" id="password" name="password" 
+                                        disabled value="********" required />
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid city.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Name</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="Complete name" name="name" id="name"
+                                        value="{{user.use_name}}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Email</label>
+                                <div class="col-sm-8">
+                                    <input type="email" class="form-control" placeholder="Email" name="email" value="{{user.use_email}}"
+                                        id="email" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Role</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" disabled name="rolId" id="rolId">
+                                        <option>{{rolName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row justify-content-md-center">
+                        <div class="form-group row">
+                            <div class="container p-10">
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#cancelModal">Cancel</button>
+                            </div>
+                        </div>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <div class="form-group row">
+                            <div class="container p-10">
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                    data-target="#submitModal">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- Modals-->
+
+<!-- Cancel -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cancel Record</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel the updation of the current record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal"
+                    onclick="window.location.href='/'">Cancel Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Submit -->
+<div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Submit Record</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to update the current record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal"
+                    onclick="enviarFormulario()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+
+<script>
+    function enviarFormulario() {
+        document.getElementById("updateUser").submit();
+    }
+</script>
