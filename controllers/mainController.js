@@ -77,7 +77,7 @@ function getParamDay() {
     let date = new Date()
     let hour = date.getHours()
 
-    if (hour >= 21 || hour < 11) {
+    if (hour >= 23 || hour < 11) {
         return "bg-gradient-dark"
     } else {
         return "bg-gradient-primary"
