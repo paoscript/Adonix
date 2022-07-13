@@ -49,3 +49,13 @@ exports.updateApprenticeById = async (app_identification, app_name, app_ccms_id,
 
     return;
 }
+
+
+exports.getApprenticeByNumberIdentification = async (numberIdentification) => {
+    let rows = []
+    
+    rows = await query("select a.app_id, a.app_identification, a.app_name from apprentices as a where a.app_identification = ?", [numberIdentification]);
+
+    return rows;
+
+}
