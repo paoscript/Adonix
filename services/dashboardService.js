@@ -12,7 +12,7 @@ exports.getCountApprentices = async () => {
 exports.getCountLastestApprenticeship = async () => {
     let rows = []
     
-    rows = await query("SELECT count(a.app_productive_start_date) as count from apprentices AS a WHERE a.app_productive_start_date BETWEEN DATE_SUB(NOW(), INTERVAL 60 DAY) AND NOW()");
+    rows = await query("SELECT count(a.app_productive_start_date) as count from apprentices AS a WHERE a.app_productive_start_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()");
 
     return rows[0];
 
@@ -21,7 +21,7 @@ exports.getCountLastestApprenticeship = async () => {
 exports.getCountApprendicesNearingLeave = async () => {
     let rows = []
     
-    rows = await query("SELECT count(a.app_productive_end_date) as count from apprentices AS a WHERE a.app_productive_end_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 60 DAY)");
+    rows = await query("SELECT count(a.app_productive_end_date) as count from apprentices AS a WHERE a.app_productive_end_date BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 DAY)");
 
     return rows[0];
 

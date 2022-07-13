@@ -11,7 +11,7 @@ exports.createModification = async (typeModification, apprenticeId, dateStart, d
 exports.getModificationsList = async () => {
     let rows = []
     
-    rows = await query("select m.mod_id, m.mod_type_modification, m.mod_apprentice_id, m.mod_date_start, m.mod_date_end, m.mod_count_day from modifications as m");
+    rows = await query("select m.mod_id, m.mod_type_modification, a.app_identification, m.mod_date_start, m.mod_date_end, m.mod_count_day from modifications as m inner join apprentices as a on m.mod_apprentice_id = a.app_id");
 
     return rows;
 
@@ -38,16 +38,9 @@ exports.deleteModificationById = async (modificationId) => {
     return;
 }
 
-exports.updateUserById = async (userIdentification, userName, userEmail, userId) => {
+exports.updateModificationById = async (typeModification, dateStart, dateEnd, countDays, apprenticeId, modificationId) => {
     
-    await query("UPDATE users as u SET u.use_identification_number=?, u.use_name=?, u.use_email=? WHERE u.use_id=?",[userIdentification, userName, userEmail, userId]);
-
-    return;
-}
-
-exports.updateUserSettingsById = async (userIdentification, password, name,userEmail, userId) => {
-    
-    await query("UPDATE users as u SET u.use_identification_number=?, u.use_password=?,u.use_name=?, u.use_email=? WHERE u.use_id=?",[userIdentification, password, name, userEmail, userId]);
+    await query("UPDATE modifications as m SET m.mod_type_modification=?, m.mod_date_start=?, m.mod_date_end=?, m.mod_count_day=?, m.mod_apprentice_id=? WHERE m.mod_id=?", [typeModification, dateStart, dateEnd, countDays, apprenticeId, modificationId]);
 
     return;
 }

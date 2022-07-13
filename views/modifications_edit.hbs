@@ -3,7 +3,8 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Create a new Modification</h4>
-            <form class="form-sample" id="createNewApprentice" action="/modifications/create/newModification" method="post">
+            <form class="form-sample" id="updateModification" action="{{url}}{{modification.mod_id}}"
+                method="post">
                 <p class="card-description">
                     Please fill in the following information 📝
                 </p>
@@ -28,7 +29,7 @@
                             <label class="col-sm-3 col-form-label">Número de Docuemento del Aprendiz</label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control" placeholder="Document ID" name="documentId"
-                                       id="documentId" value="{{modification.mod_apprentice_id}}" required />
+                                    id="documentId" value="{{apprentice_id}}" required />
                             </div>
                         </div>
                     </div>
@@ -38,7 +39,8 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Fecha de Inicio</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="dateStart" name="dateStart" value="{{modification.mod_date_start}}" />
+                                <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="dateStart"
+                                    name="dateStart" value="{{modification.mod_date_start}}" />
                             </div>
                         </div>
                     </div>
@@ -46,7 +48,8 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Fecha de Finalización</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" placeholder="Number" id="dateEnd" name="dateEnd" onchange="calcularDias()" value="{{modification.mod_date_end}}" />
+                                <input type="date" class="form-control" placeholder="Number" id="dateEnd" name="dateEnd"
+                                    onchange="calcularDias()" value="{{modification.mod_date_end}}" />
                             </div>
                         </div>
                     </div>
@@ -56,7 +59,8 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Cantidad de Días</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" placeholder="Count Days" name="countDays" id="countDays" value="{{modification.mod_count_day}}"/>
+                                <input type="number" class="form-control" placeholder="Count Days" name="countDays"
+                                    id="countDays" value="{{modification.mod_count_day}}" />
                             </div>
                         </div>
                     </div>
@@ -64,13 +68,15 @@
                 <div class="row justify-content-md-center">
                     <div class="form-group row">
                         <div class="container p-10">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Cancel</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                data-target="#cancelModal">Cancel</button>
                         </div>
                     </div>
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                     <div class="form-group row">
                         <div class="container p-10">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#submitModal">Submit</button>
+                            <button type="button" class="btn btn-success" data-toggle="modal"
+                                data-target="#submitModal">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -98,7 +104,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="window.location.href='/'">Cancel Creation</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal"
+                            onclick="window.location.href='/'">Cancel Creation</button>
                     </div>
                 </div>
             </div>
@@ -119,7 +126,30 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="enviarFormulario()">Submit</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal"
+                            onclick="enviarFormulario()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Number Apprentice -->
+        <div class="modal fade" id="numberApprenticeError" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error in the field "Number Identification
+                            Apprentice".</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>No apprentice found with the entered identification number</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -128,17 +158,28 @@
 </div>
 
 <script>
+
+    mostrarAlerta({{alerta}})
+
+    function mostrarAlerta(activar) {
+        if (activar == true) {
+            window.onload = setTimeout(() => {
+                $("#numberApprenticeError").modal('show');
+            }, 1000);
+        }
+    }
+
     function enviarFormulario() {
-        document.getElementById("createNewApprentice").submit();
+        document.getElementById("updateModification").submit();
     }
 
     function calcularDias() {
         var fechaini = new Date(document.getElementById('dateStart').value + 'T00:00');
         var fechafin = new Date(document.getElementById('dateEnd').value + 'T00:00');
-        var diasdif= fechafin.getTime()-fechaini.getTime();
-        var contdias = Math.round(diasdif/(1000*60*60*24));
-        
-        document.getElementById('countDays').setAttribute('value', contdias + 1) 
-      
+        var diasdif = fechafin.getTime() - fechaini.getTime();
+        var contdias = Math.round(diasdif / (1000 * 60 * 60 * 24));
+
+        document.getElementById('countDays').setAttribute('value', contdias + 1)
+
     }
 </script>

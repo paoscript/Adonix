@@ -44,17 +44,20 @@ router.get('/consult', async function(req, res, next) {
 router.get('/edit/:modificationId', async function(req, res, next) {
     let idUser = req.cookies.idUser;
     const modificationId = req.params.modificationId;
-    let modification = await modificationService.getModificationById(modificationId);   
-
+    let modification = await modificationService.getModificationById(modificationId);
+    
     if(modification === "") {
         res.redirect('/users/edit/errors/error-404.html');
         return;
     }
 
+    let apprentice = await apprenticesService.getApprenticeById(modification.mod_apprentice_id);
+    let apprentice_id = apprentice.app_identification;
+
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification});
+        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: apprentice_id, url: "/modifications/update/"});
     }
 });
 
@@ -71,9 +74,18 @@ router.post('/create/newModification', async function(req, res, next) {
 
     let apprentice = await apprenticesService.getApprenticeByNumberIdentification(documentId);
 
-    console.log(apprentice);
+    if (apprentice === undefined) {
+        let modification = {
+            mod_type_modification: typeModification,
+            mod_date_start: dateStart,
+            mod_date_end: dateEnd,
+            mod_count_day: countDays,
+        }
+        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/create/newModification"});
+        return;
+    }
 
-    await modificationService.createModification(typeModification, apprentice[0].app_id, dateStart, dateEnd, countDays, idUser);
+    await modificationService.createModification(typeModification, apprentice.app_id, dateStart, dateEnd, countDays, idUser);
     
     res.redirect('/modifications/consult/')
 
@@ -98,20 +110,31 @@ router.post('/delete/:modificationId', async function(req, res, next) {
 });
 
 /* GET create user page. */
-router.post('/update/:userId', async function(req, res, next) {
+router.post('/update/:modificationId', async function(req, res, next) {
     let idUser = req.cookies.idUser;
-    const userId = req.params.userId;
+    const modificationId = req.params.modificationId;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
     }
 
-    let numberIdentification = req.body.identification;
-    let userName = req.body.name;
-    let email = req.body.email;
+    let {typeModification, documentId, dateStart, dateEnd, countDays} = req.body;
+    let apprentice = await apprenticesService.getApprenticeByNumberIdentification(documentId);
 
-    await userManagement.modificationService(numberIdentification, userName, email, userId);
+    if (apprentice === undefined) {
+        let modification = {
+            mod_id: modificationId,
+            mod_type_modification: typeModification,
+            mod_date_start: dateStart,
+            mod_date_end: dateEnd,
+            mod_count_day: countDays,
+        }
+        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/update/"});
+        return;
+    }
+
+    await modificationService.updateModificationById(typeModification, dateStart, dateEnd, countDays, apprentice.app_id, modificationId);
 
     res.redirect('/modifications/consult/')
 });
