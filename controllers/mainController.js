@@ -9,24 +9,38 @@ var cacheWeatherInfo = { icon: "", temp: "", lasDate: new Date().setTime(new Dat
 /* GET main page. */
 router.get('/', async (req, res, next) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
+
+    console.log(idRolUser)
 
     if (idUser === undefined) {
         res.redirect('/login');
-    } else {
-        let coutApprentices = await dashboardService.getCountApprentices();
-        let countModifications = await dashboardService.getCountModifications();
-        let lastestApprenticeship = await dashboardService.getCountLastestApprenticeship();
-        let countApprendicesNearingLeave = await dashboardService.getCountApprendicesNearingLeave();
+        return;
+    } 
 
-        let weatherInfo = await getWeatherInformation();
+    let coutApprentices = await dashboardService.getCountApprentices();
+    let countModifications = await dashboardService.getCountModifications();
+    let lastestApprenticeship = await dashboardService.getCountLastestApprenticeship();
+    let countApprendicesNearingLeave = await dashboardService.getCountApprendicesNearingLeave();
 
-        let paramDay = getParamDay();
+    let weatherInfo = await getWeatherInformation();
 
-        res.render('main', { title: 'Main Page', isWithInterface: true, coutApprentices: coutApprentices.count, countModifications: countModifications.count, lastestApprenticeship: lastestApprenticeship.count, countApprendicesNearingLeave: countApprendicesNearingLeave.count, iconWeather: weatherInfo.icon, tempWeather: weatherInfo.temp, paramDay: paramDay });
+    let paramDay = getParamDay();
 
-    }
-
-
+    res.render('main', 
+        { 
+            title: 'Main Page', 
+            isWithInterface: true,
+            isHasMenuUserPermition: idRolUser == 1 ? true : false,
+            coutApprentices: coutApprentices.count, 
+            countModifications: countModifications.count, 
+            lastestApprenticeship: lastestApprenticeship.count, 
+            countApprendicesNearingLeave: countApprendicesNearingLeave.count, 
+            iconWeather: weatherInfo.icon, 
+            tempWeather: weatherInfo.temp, 
+            paramDay: paramDay
+        }
+    );
 });
 
 async function getWeatherInformation() {

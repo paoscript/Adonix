@@ -7,17 +7,26 @@ var roleList = ["Administrator", "Manager", "Employee"];
 /* GET create user page. */
 router.get('/create', function(req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('users_create', { title: 'Create New User', isWithInterface: true,  roleList: roleList});
+        res.render('users_create', 
+            { 
+                title: 'Create New User', 
+                isWithInterface: true,
+                isHasMenuUserPermition: idRolUser == 1 ? true : false,   
+                roleList: roleList
+            }
+        );
     }
 });
 
 /* GET consult users page. */
 router.get('/consult', async function(req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     let listUsers = await userManagement.getUserList();
 
@@ -34,7 +43,16 @@ router.get('/consult', async function(req, res, next) {
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('users_consult', { title: 'Consult Users', isWithInterface: true, countRecords: listUsers.length, listUsers: listUsers, pagination: pagination});
+        res.render('users_consult', 
+            { 
+                title: 'Consult Users', 
+                isWithInterface: true,
+                isHasMenuUserPermition: idRolUser == 1 ? true : false,  
+                countRecords: listUsers.length, 
+                listUsers: listUsers, 
+                pagination: pagination
+            }
+        );
     }
 });
 
@@ -44,6 +62,7 @@ router.get('/consult', async function(req, res, next) {
 /* GET create user page. */
 router.get('/edit/:userId', async function(req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
     const userId = req.params.userId;
     let user = await userManagement.getUserById(userId);
     
@@ -68,7 +87,15 @@ router.get('/edit/:userId', async function(req, res, next) {
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('users_edit', { title: 'Edit User', isWithInterface: true, user: user, roleList: roleListResult});
+        res.render('users_edit', 
+            { 
+                title: 'Edit User', 
+                isWithInterface: true,
+                isHasMenuUserPermition: idRolUser == 1 ? true : false,  
+                user: user, 
+                roleList: roleListResult
+            }
+        );
     }
 });
 

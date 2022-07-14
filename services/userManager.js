@@ -1,7 +1,7 @@
 const query = require('./dbService.js')
 
 exports.validateLogin = async (numberIdentification, password) => {
-    let rows = await query("select u.use_identification_number, u.use_password from users as u where u.use_identification_number = ?", [numberIdentification]);
+    let rows = await query("select u.use_identification_number, u.use_password, u.use_id, u.use_rol_id from users as u where u.use_identification_number = ?", [numberIdentification]);
 
     if (rows.length === 0) {
         return false
@@ -9,7 +9,19 @@ exports.validateLogin = async (numberIdentification, password) => {
 
     let user = rows[0];
 
-    return user.use_identification_number === numberIdentification && user.use_password === password;
+    let infoLogin = {
+        isLogin: false,
+        idUser: 0,
+        rolId: 0
+    }
+
+    if (user.use_identification_number === numberIdentification && user.use_password === password) {
+        infoLogin.isLogin = true;
+        infoLogin.idUser = user.use_id;
+        infoLogin.rolId = user.use_rol_id;
+    }
+    
+    return infoLogin
 
 }
 

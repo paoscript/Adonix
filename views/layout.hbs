@@ -233,21 +233,24 @@
                 -->
                 <!--USERS-->
 
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#users" aria-expanded="false"
-                       aria-controls="users">
-                        <i class="fa-solid fa-user-group">&nbsp&nbsp&nbsp&nbsp</i>
-                        <span class="menu-title">Users</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="users">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="/users/create/"> Create </a></li>
-                            <li class="nav-item"> <a class="nav-link" href="/users/consult/"> Consult </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                {{#if isHasMenuUserPermition}}
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#users" aria-expanded="false"
+                        aria-controls="users">
+                            <i class="fa-solid fa-user-group">&nbsp&nbsp&nbsp&nbsp</i>
+                            <span class="menu-title">Users</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="users">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="/users/create/"> Create </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/users/consult/"> Consult </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                {{/if}}
 
                 <!-- ERRORS-->
                 <!--

@@ -6,19 +6,28 @@ const apprenticesService = require("../services/apprenticesService")
 /* GET create user page. */
 router.get('/create', function(req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole
 
     listOptionsTypeModification = ["Incapacidad", "Fuerza Mayor o Caso Fortuito", "Licencia Paternidad", "Licencia Maternidad", "Vacaciones del Empleador"];
 
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('modifications_create', { title: 'Create New Modification', isWithInterface: true,  listOptionsTypeModification: listOptionsTypeModification});
+        res.render('modifications_create', 
+            { 
+                title: 'Create New Modification',
+                isHasMenuUserPermition: idRolUser == 1 ? true : false, 
+                isWithInterface: true,  
+                listOptionsTypeModification: listOptionsTypeModification
+            }
+        );
     }
 });
 
 /* GET consult users page. */
 router.get('/consult', async function(req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     let listModifications = await modificationService.getModificationsList();
 
@@ -35,7 +44,16 @@ router.get('/consult', async function(req, res, next) {
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('modifications_consult', { title: 'Consult Modifications', isWithInterface: true, countRecords: listModifications.length, listModifications: listModifications, pagination: pagination});
+        res.render('modifications_consult', 
+            { 
+                title: 'Consult Modifications', 
+                isWithInterface: true, 
+                isHasMenuUserPermition: idRolUser == 1 ? true : false,
+                countRecords: listModifications.length, 
+                listModifications: listModifications, 
+                pagination: pagination
+            }
+        );
     }
 });
 
@@ -45,6 +63,7 @@ router.get('/consult', async function(req, res, next) {
 /* GET create user page. */
 router.get('/edit/:modificationId', async function(req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
     const modificationId = req.params.modificationId;
     let modification = await modificationService.getModificationById(modificationId);
     
@@ -62,7 +81,16 @@ router.get('/edit/:modificationId', async function(req, res, next) {
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: apprentice_id, url: "/modifications/update/", listOptionsTypeModification: listOptionsTypeModification});
+        res.render('modifications_edit', 
+            { title: 'Edit User', 
+            isWithInterface: true,
+            isHasMenuUserPermition: idRolUser == 1 ? true : false, 
+            modification: modification, 
+            apprentice_id: apprentice_id, 
+            url: "/modifications/update/", 
+            listOptionsTypeModification: listOptionsTypeModification
+        }
+    );
     }
 });
 

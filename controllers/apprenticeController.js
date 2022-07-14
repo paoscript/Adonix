@@ -12,6 +12,7 @@ var listCity = ["Amazonas","Antioquia","Arauca","Atlántico","Bogotá","Bolívar
 /* GET main page. */
 router.get('/create', function (req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     if (idUser === undefined) {
         res.redirect('/login');
@@ -19,6 +20,7 @@ router.get('/create', function (req, res, next) {
         res.render('apprentices_create',
             {
                 title: 'Create New Apprentice',
+                isHasMenuUserPermition: idRolUser == 1 ? true : false,
                 isWithInterface: true,
                 svgaOptions: svgaOptions,
                 yieldedOptions: yieldedOptions,
@@ -33,6 +35,7 @@ router.get('/create', function (req, res, next) {
 /* GET main page. */
 router.get('/consult', async function (req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     let listApprentices = await apprenticesService.getApprenticesList();
 
@@ -53,6 +56,7 @@ router.get('/consult', async function (req, res, next) {
             {
                 title: 'Consult Apprentices',
                 isWithInterface: true,
+                isHasMenuUserPermition: idRolUser == 1 ? true : false,
                 listApprentices: listApprentices,
                 pagination: pagination,
                 countRecords: listApprentices.length
@@ -108,6 +112,7 @@ router.post('/delete/:apprenticeId', async function (req, res, next) {
 /* GET create user page. */
 router.get('/edit/:apprenticeId', async function (req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     if (idUser === undefined) {
         res.redirect('/login');
@@ -132,6 +137,7 @@ router.get('/edit/:apprenticeId', async function (req, res, next) {
         {
             title: 'Update User',
             isWithInterface: true,
+            isHasMenuUserPermition: idRolUser == 1 ? true : false,
             apprentice: apprentice,
             contratStartDate: parseToDate(apprentice.app_contract_start_date),
             endDateStudy: parseToDate(apprentice.app_end_date_study),
