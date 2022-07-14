@@ -120,7 +120,7 @@
         var result = confirm('Are you sure you want to delete this record?');
 
         if (result) {
-            var url = "http://localhost:80/modifications/delete/" + idModification;
+            var url = "/modifications/delete/" + idModification;
 
             var xhr = new XMLHttpRequest();
             xhr.open("POST", url);
