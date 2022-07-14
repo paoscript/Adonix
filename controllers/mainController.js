@@ -7,11 +7,9 @@ var cacheWeatherInfo = { icon: "", temp: "", lasDate: new Date().setTime(new Dat
 
 
 /* GET main page. */
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
     let idUser = req.cookies.idUser;
     let idRolUser = req.cookies.idRole;
-
-    console.log(idRolUser)
 
     if (idUser === undefined) {
         res.redirect('/login');
@@ -43,6 +41,10 @@ router.get('/', async (req, res, next) => {
     );
 });
 
+
+/* UTILS FUCTIONS */
+
+/*Get weather information from the Open Weather API.*/
 async function getWeatherInformation() {
 
     const options = {
@@ -74,10 +76,10 @@ async function getWeatherInformation() {
             cacheWeatherInfo.temp = Math.ceil(response.data.main.temp) + 1
             cacheWeatherInfo.lasDate = new Date();
 
-            console.log("Guarda en cache");
+            console.log("Weather data cached correctly: " + cacheWeatherInfo);
 
         }).catch(function (error) {
-            console.error(error);
+            console.error("error when obtaining data from the weather api: ",error);
         });
     }
 
@@ -87,6 +89,7 @@ async function getWeatherInformation() {
     return weatherInfo
 }
 
+/*Get parameter for the front end to know if it is day or night.*/
 function getParamDay() {
     let date = new Date()
     let hour = date.getHours()
