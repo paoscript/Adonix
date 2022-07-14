@@ -49,6 +49,7 @@ router.get('/consult', async function(req, res, next) {
                 title: 'Consult Modifications', 
                 isWithInterface: true, 
                 isHasMenuUserPermition: idRolUser == 1 ? true : false,
+                hasDowloadRecordPermition: idRolUser == 1 || idRolUser == 2 ? true : false,
                 countRecords: listModifications.length, 
                 listModifications: listModifications, 
                 pagination: pagination

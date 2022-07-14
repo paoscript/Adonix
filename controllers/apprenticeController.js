@@ -57,6 +57,7 @@ router.get('/consult', async function (req, res, next) {
                 title: 'Consult Apprentices',
                 isWithInterface: true,
                 isHasMenuUserPermition: idRolUser == 1 ? true : false,
+                hasDowloadRecordPermition: idRolUser == 1 || idRolUser == 2 ? true : false,
                 listApprentices: listApprentices,
                 pagination: pagination,
                 countRecords: listApprentices.length
