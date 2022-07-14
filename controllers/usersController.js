@@ -112,10 +112,19 @@ router.post('/create/newUser', async function(req, res, next) {
         return;
     }
 
+    let rolId = req.body.rolId;
+
+    if (rolId === "Administrator") {
+        rolId = 1;
+    } else if (rolId === "Manager") {
+        rolId = 2
+    } else if (rolId === "Employee") {
+        rolId = 3;
+    }
+
     let numberIdentification = req.body.identification;
     let password = req.body.password;
     let userName = req.body.name;
-    let rolId = req.body.rolId;
     let email = req.body.email;
 
     await userManagement.createUser(numberIdentification, userName, password, email, rolId);
