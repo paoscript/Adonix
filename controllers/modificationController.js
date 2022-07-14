@@ -23,7 +23,7 @@ router.get('/create', (req, res) => {
             title: 'Create New Modification',
             isHasMenuUserPermition: idRolUser == 1 ? true : false, 
             isWithInterface: true,  
-            listModifications: listTypeModifications
+            listOptionsTypeModification: listTypeModifications
         }
     );
 });
@@ -113,7 +113,7 @@ router.post('/create/newModification', async (req, res) => {
             mod_count_day: countDays,
         }
 
-        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/create/newModification", listModifications: listOptionsTypeModification});
+        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/create/newModification", listOptionsTypeModification: listOptionsTypeModification});
         return;
     }
 

@@ -58,7 +58,6 @@ router.get('/consult', async (req, res) => {
             isHasMenuUserPermition: idRolUser == 1 ? true : false,
             hasDowloadRecordPermition: idRolUser == 1 || idRolUser == 2 ? true : false,
             listApprentices: listApprentices,
-            pagination: pagination,
             countRecords: listApprentices.length
         }
     );
@@ -74,12 +73,12 @@ router.post('/create/newApprentice', async (req, res) => {
         return;
     }
 
-    let { identification, idCCMS, name, group, sgva, ceco, jobDescription, relatedPosition, payment, birthday, address, email, eps, city,
+    let { identification, idCCMS, name, group, sgva, ceco, jobDescription, relatedPosition, payment, birthDay, address, email, eps, city,
         institution, specility, nameBoss, ccmsBoss, category, yielded, state, contratStartDate, company, endDateStudy, productiveStartDate,
         productiveEndDate, countDays, phoneNumber } = req.body;
 
     await apprenticesService.createNewApprentice(identification, name, idCCMS, sgva, group, ceco, jobDescription, relatedPosition, 
-                                                    payment, birthday, address, email, eps, city, institution, specility, nameBoss, 
+                                                    payment, birthDay, address, email, eps, city, institution, specility, nameBoss, 
                                                     ccmsBoss, category, yielded, state, contratStartDate, endDateStudy, productiveStartDate, 
                                                     productiveEndDate, countDays, phoneNumber, company, idUser);
 
