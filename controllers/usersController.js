@@ -144,12 +144,13 @@ router.post('/delete/:userId', async function(req, res, next) {
         return;
     }
 
-    if (userId == 1 || userId == 2 || userId == 8) {
+    if (userId == 1 || userId == 2 || userId == 3) {
         res.redirect('/users/consult/')
         return;
-    } else {
-        await userManagement.deleteUserById(userId)
-    }
+    } 
+
+    await userManagement.deleteUserById(userId)
+    
     res.redirect('/users/consult/')
 
 });
