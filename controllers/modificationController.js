@@ -6,12 +6,14 @@ const generatorReportService = require("../services/generatorReportService");
 const fs = require('fs')
 const path = require('path')
 
+var listTypeModifications = ["Incapacidad", "Fuerza Mayor o Caso Fortuito", "Licencia Paternidad", "Licencia Maternidad", "Vacaciones del Empleador"];
+
 /* GET create user page. */
 router.get('/create', function(req, res, next) {
     let idUser = req.cookies.idUser;
     let idRolUser = req.cookies.idRole
 
-    listOptionsTypeModification = ["Incapacidad", "Fuerza Mayor o Caso Fortuito", "Licencia Paternidad", "Licencia Maternidad", "Vacaciones del Empleador"];
+    listOptionsTypeModification = listTypeModifications;
 
     if (idUser === undefined) {
         res.redirect('/login');
@@ -21,7 +23,7 @@ router.get('/create', function(req, res, next) {
                 title: 'Create New Modification',
                 isHasMenuUserPermition: idRolUser == 1 ? true : false, 
                 isWithInterface: true,  
-                listOptionsTypeModification: listOptionsTypeModification
+                listModifications: listOptionsTypeModification
             }
         );
     }
@@ -79,7 +81,7 @@ router.get('/edit/:modificationId', async function(req, res, next) {
     let apprentice = await apprenticesService.getApprenticeById(modification.mod_apprentice_id);
     let apprentice_id = apprentice.app_identification;
 
-    listOptionsTypeModification = ["Incapacidad", "Fuerza Mayor o Caso Fortuito", "Licencia Paternidad", "Licencia Maternidad", "Vacaciones del Empleador"];
+    let listOptionsTypeModification = listTypeModifications;
     listOptionsTypeModification = await orderOptions(modification.mod_type_modification, listOptionsTypeModification)
 
     if (idUser === undefined) {
@@ -92,7 +94,7 @@ router.get('/edit/:modificationId', async function(req, res, next) {
             modification: modification, 
             apprentice_id: apprentice_id, 
             url: "/modifications/update/", 
-            listOptionsTypeModification: listOptionsTypeModification
+            listModifications: listOptionsTypeModification
         }
     );
     }
@@ -112,13 +114,16 @@ router.post('/create/newModification', async function(req, res, next) {
     let apprentice = await apprenticesService.getApprenticeByNumberIdentification(documentId);
 
     if (apprentice === undefined) {
+
+        let listOptionsTypeModification = orderOptions(typeModification, listTypeModifications)
+
         let modification = {
             mod_type_modification: typeModification,
             mod_date_start: dateStart,
             mod_date_end: dateEnd,
             mod_count_day: countDays,
         }
-        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/create/newModification"});
+        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/create/newModification", listModifications: listOptionsTypeModification});
         return;
     }
 
@@ -160,6 +165,9 @@ router.post('/update/:modificationId', async function(req, res, next) {
     let apprentice = await apprenticesService.getApprenticeByNumberIdentification(documentId);
 
     if (apprentice === undefined) {
+
+        let listOptionsTypeModification = orderOptions(typeModification, listTypeModifications)
+
         let modification = {
             mod_id: modificationId,
             mod_type_modification: typeModification,
@@ -167,7 +175,7 @@ router.post('/update/:modificationId', async function(req, res, next) {
             mod_date_end: dateEnd,
             mod_count_day: countDays,
         }
-        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/update/"});
+        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/update/", listModifications: listOptionsTypeModification});
         return;
     }
 
