@@ -50,9 +50,31 @@
                 <div class="col-3 ">
                     <div class="input-group rounded">
                         <input type="search" class="form-control rounded" placeholder="Search 🔍" aria-label="Search"
-                            aria-describedby="search-addon" />
+                            aria-describedby="search-addon" onchange="searchIntoTable()" id="searchElement" />
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-9 ">
+                    <p>Showing {{countRecords}} entries</p>
+                </div>
+                <!--
+                <div class="col-1 ">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            {{#each pagination}}
+                            <li class="page-item"><a class="page-link" href="#">{{number}}</a></li>
+                            {{/each}}
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                -->
             </div>
         </div>
 
@@ -74,12 +96,12 @@
                     </thead>
                     <tbody>
                         {{#each listUsers}}
-                        <tr>
+                        <tr id="tr{{use_id}}">
                             <td><input type="checkbox" class="checkthis" /></td>
-                            <td>{{use_identification_number}}</td>
-                            <td>{{use_name}}</td>
-                            <td>{{use_email}}</td>
-                            <td>{{use_rol_id}}</td>
+                            <td id="tdNumberIdentification{{use_id}}">{{use_identification_number}}</td>
+                            <td id="tdName{{use_id}}">{{use_name}}</td>
+                            <td id="tdEmail{{use_id}}">{{use_email}}</td>
+                            <td >{{use_rol_id}}</td>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit"><button
                                         onclick="window.location.href='/users/edit/{{use_id}}/'"
@@ -99,26 +121,6 @@
                     </tbody>
 
                 </table>
-            </div>
-        </div>
-
-        <br>
-        <div class="container">
-            <div class="row">
-                <div class="col-9 ">
-                    <p>Showing 1 to 10 of {{countRecords}} entries</p>
-                </div>
-                <div class="col-1 ">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            {{#each pagination}}
-                            <li class="page-item"><a class="page-link" href="#">{{number}}</a></li>
-                            {{/each}}
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
         </div>
 
@@ -147,5 +149,31 @@
             
         }
 
+    }
+
+    function searchIntoTable(){
+
+        var valueToSearh = document.getElementById("searchElement").value.toString();
+
+        var listUsersToSearch = [
+            {{#each listUsers}}
+                {{use_id}} ,
+            {{/each}}
+        ];
+
+        for (var i = 0; i < listUsersToSearch.length; i++) {
+
+            var numberIdentificationId = document.getElementById("tdNumberIdentification" + listUsersToSearch[i]).innerText;
+            var name = document.getElementById("tdName" + listUsersToSearch[i]).innerText;
+            var email = document.getElementById("tdEmail" + listUsersToSearch[i]).innerText;
+
+            if (numberIdentificationId.includes(valueToSearh) || name.includes(valueToSearh) || email.includes(valueToSearh)) {
+                document.getElementById("tr" + listUsersToSearch[i]).style.display = '';
+            } else {
+                document.getElementById("tr" + listUsersToSearch[i]).style.display = 'none';
+            }
+        }
+
+        
     }
 </script>

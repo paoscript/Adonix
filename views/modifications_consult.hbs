@@ -38,9 +38,31 @@
                 <div class="col-3 ">
                     <div class="input-group rounded">
                         <input type="search" class="form-control rounded" placeholder="Search 🔍" aria-label="Search"
-                            aria-describedby="search-addon" />
+                            aria-describedby="search-addon" onchange="searchIntoTable()" id="searchElement"/>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-9 ">
+                    <p>Showing {{countRecords}} entries</p>
+                </div>
+                <!--
+                <div class="col-1 ">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            {{#each pagination}}
+                            <li class="page-item"><a class="page-link" href="#">{{number}}</a></li>
+                            {{/each}}
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                -->
             </div>
         </div>
 
@@ -63,10 +85,10 @@
                     </thead>
                     <tbody>
                         {{#each listModifications}}
-                        <tr>
+                        <tr id="tr{{mod_id}}">
                             <td><input type="checkbox" class="checkthis" /></td>
-                            <td>{{mod_type_modification}}</td>
-                            <td>{{app_identification}}</td>
+                            <td id="tdTypeModification{{mod_id}}">{{mod_type_modification}}</td>
+                            <td id="tdAppIdentification{{mod_id}}">{{app_identification}}</td>
                             <td>{{mod_date_start}}</td>
                             <td>{{mod_date_end}}</td>
                             <td>{{mod_count_day}}</td>
@@ -88,26 +110,6 @@
                     </tbody>
 
                 </table>
-            </div>
-        </div>
-
-        <br>
-        <div class="container">
-            <div class="row">
-                <div class="col-9 ">
-                    <p>Showing 1 to 10 of {{countRecords}} entries</p>
-                </div>
-                <div class="col-1 ">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            {{#each pagination}}
-                            <li class="page-item"><a class="page-link" href="#">{{number}}</a></li>
-                            {{/each}}
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
         </div>
 
@@ -135,6 +137,31 @@
             }, 1000);
             
         }       
+        
+    }
+
+    function searchIntoTable(){
+
+        var valueToSearh = document.getElementById("searchElement").value.toString();
+
+        var listModificationToSearch = [
+            {{#each listModifications}}
+                {{mod_id}} ,
+            {{/each}}
+        ];
+
+        for (var i = 0; i < listModificationToSearch.length; i++) {
+            var typeModification = document.getElementById("tdTypeModification" + listModificationToSearch[i]).innerText;
+            var appIdentification = document.getElementById("tdAppIdentification" + listModificationToSearch[i]).innerText;
+
+            if (typeModification.includes(valueToSearh) || appIdentification.includes(valueToSearh)) {
+                 
+                document.getElementById("tr" + listModificationToSearch[i]).style.display = '';
+            } else {
+                document.getElementById("tr" + listModificationToSearch[i]).style.display = 'none';
+            }
+        }
+
         
     }
 </script>

@@ -52,21 +52,25 @@ router.get('/consult', async function (req, res, next) {
         }
     }
 
+    listApprentices = ajustDateForListApprentices(listApprentices);
+
     if (idUser === undefined) {
         res.redirect('/login');
-    } else {
-        res.render('apprentices_consult',
-            {
-                title: 'Consult Apprentices',
-                isWithInterface: true,
-                isHasMenuUserPermition: idRolUser == 1 ? true : false,
-                hasDowloadRecordPermition: idRolUser == 1 || idRolUser == 2 ? true : false,
-                listApprentices: listApprentices,
-                pagination: pagination,
-                countRecords: listApprentices.length
-            }
-        );
-    }
+        return;
+    } 
+
+    res.render('apprentices_consult',
+        {
+            title: 'Consult Apprentices',
+            isWithInterface: true,
+            isHasMenuUserPermition: idRolUser == 1 ? true : false,
+            hasDowloadRecordPermition: idRolUser == 1 || idRolUser == 2 ? true : false,
+            listApprentices: listApprentices,
+            pagination: pagination,
+            countRecords: listApprentices.length
+        }
+    );
+
 });
 
 
@@ -190,9 +194,18 @@ router.get('/dowload', async (req, res, next) => {
     res.end();
 });
 
-function parseToDate(date) {
+function ajustDateForListApprentices(listApprentices) {
+    
+    listApprentices.forEach(apprentice => {
+        apprentice.app_productive_start_date = parseToDate(apprentice.app_productive_start_date)
+        apprentice.app_productive_end_date = parseToDate(apprentice.app_productive_end_date)
+    });
 
-    console.log(date);
+    return listApprentices;
+
+}
+
+function parseToDate(date) {
 
     if (date === null) {
         return "";
@@ -211,7 +224,7 @@ function parseToDate(date) {
     }
 
     let fechaParseada = año + "-" + mes + "-" + dia;
-    console.log(fechaParseada)
+
     return fechaParseada
 }
 

@@ -39,9 +39,31 @@
                 <div class="col-3">
                     <div class="input-group rounded">
                         <input type="search" class="form-control rounded" placeholder="Search 🔍" aria-label="Search"
-                            aria-describedby="search-addon" />
+                            aria-describedby="search-addon" id="searchElement" onchange="searchIntoTable()" />
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-9 ">
+                    <p>Showing {{countRecords}} entries</p>
+                </div>
+                <!--
+                <div class="col-1 ">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            {{#each pagination}}
+                            <li class="page-item"><a class="page-link" href="#">{{number}}</a></li>
+                            {{/each}}
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                -->
             </div>
         </div>
 
@@ -57,13 +79,6 @@
                         <th>Number Identification</th>
                         <th>Name</th>
                         <th>ID CCMS</th>
-                        <th>ID CECO</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Boss Name</th>
-                        <th>ID CCMS Boss</th>
-                        <th>Contract Start Date</th>
-                        <th>End Date Study</th>
                         <th>Productive Start Date</th>
                         <th>Productive End Date</th>
                         <th>Count Days</th>
@@ -72,18 +87,11 @@
                     </thead>
                     <tbody>
                         {{#each listApprentices}}
-                        <tr>
+                        <tr id="tr{{app_id}}">
                             <td><input type="checkbox" class="checkthis" /></td>
-                            <td>{{app_identification}}</td>
-                            <td>{{app_name}}</td>
-                            <td>{{app_ccms_id}}</td>
-                            <td>{{app_ceco_id}}</td>
-                            <td>{{app_email}}</td>
-                            <td>{{app_phone_number}}</td>
-                            <td>{{app_name_boss}}</td>
-                            <td>{{app_id_ccms_boss}}</td>
-                            <td>{{app_contract_start_date}}</td>
-                            <td>{{app_end_date_study}}</td>
+                            <td id="tdNumberIdentification{{app_id}}">{{app_identification}}</td>
+                            <td id="tdName{{app_id}}">{{app_name}}</td>
+                            <td id="tdCcmsId{{app_id}}">{{app_ccms_id}}</td>
                             <td>{{app_productive_start_date}}</td>
                             <td>{{app_productive_end_date}}</td>
                             <td>{{app_count_days}}</td>
@@ -106,26 +114,6 @@
                     </tbody>
 
                 </table>
-            </div>
-        </div>
-
-        <br>
-        <div class="container">
-            <div class="row">
-                <div class="col-9 ">
-                    <p>Showing 1 to 10 of {{countRecords}} entries</p>
-                </div>
-                <div class="col-1 ">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            {{#each pagination}}
-                            <li class="page-item"><a class="page-link" href="#">{{number}}</a></li>
-                            {{/each}}
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
         </div>
 
@@ -155,4 +143,33 @@
         }
 
     }
+
+    function searchIntoTable(){
+
+        var valueToSearh = document.getElementById("searchElement").value.toString();
+
+        var listApprenticesToSearch = [
+            {{#each listApprentices}}
+                {{app_id}} ,
+            {{/each}}
+        ];
+
+        for (var i = 0; i < listApprenticesToSearch.length; i++) {
+            var numberIdentificationId = document.getElementById("tdNumberIdentification" + listApprenticesToSearch[i]).innerText;
+            var name = document.getElementById("tdName" + listApprenticesToSearch[i]).innerText;
+            var ccmsId = document.getElementById("tdCcmsId" + listApprenticesToSearch[i]).innerText;
+
+
+            if (numberIdentificationId.includes(valueToSearh) || name.includes(valueToSearh) || ccmsId.includes(valueToSearh)) {
+                 
+                document.getElementById("tr" + listApprenticesToSearch[i]).style.display = '';
+            } else {
+                document.getElementById("tr" + listApprenticesToSearch[i]).style.display = 'none';
+            }
+        }
+
+        
+    }
+
+
 </script>
