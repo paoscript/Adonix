@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `adonix_db`.`apprentices` (
   `app_identification` VARCHAR(45) NOT NULL,
   `app_name` VARCHAR(200) NOT NULL,
   `app_ccms_id` INT NOT NULL,
-  `app_sgva` INT NOT NULL,
+  `app_sgva` VARCHAR(200) NOT NULL,
   `app_group` INT NULL,
   `app_ceco_id` INT NOT NULL,
   `app_job_description` VARCHAR(500) NULL,
