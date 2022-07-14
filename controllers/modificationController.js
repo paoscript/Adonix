@@ -8,69 +8,61 @@ const path = require('path')
 
 var listTypeModifications = ["Incapacidad", "Fuerza Mayor o Caso Fortuito", "Licencia Paternidad", "Licencia Maternidad", "Vacaciones del Empleador"];
 
-/* GET create user page. */
-router.get('/create', function(req, res, next) {
+/* GET create new modification page. */
+router.get('/create', (req, res) => {
     let idUser = req.cookies.idUser;
     let idRolUser = req.cookies.idRole
 
-    listOptionsTypeModification = listTypeModifications;
+    if (idUser === undefined) {
+        res.redirect('/login');
+        return;
+    }   
+
+    res.render('modifications_create', 
+        { 
+            title: 'Create New Modification',
+            isHasMenuUserPermition: idRolUser == 1 ? true : false, 
+            isWithInterface: true,  
+            listModifications: listTypeModifications
+        }
+    );
+});
+
+/* GET consult modifications page. */
+router.get('/consult', async (req, res) => {
+    let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     if (idUser === undefined) {
         res.redirect('/login');
-    } else {
-        res.render('modifications_create', 
-            { 
-                title: 'Create New Modification',
-                isHasMenuUserPermition: idRolUser == 1 ? true : false, 
-                isWithInterface: true,  
-                listModifications: listOptionsTypeModification
-            }
-        );
+        return;
     }
-});
-
-/* GET consult users page. */
-router.get('/consult', async function(req, res, next) {
-    let idUser = req.cookies.idUser;
-    let idRolUser = req.cookies.idRole;
 
     let listModifications = await modificationService.getModificationsList();
 
-    let pagination = []
-
-    if (listModifications.length > 0) {
-        let cantidad = Math.ceil(listModifications.length / 10)
-
-        for (let index = 0; index < cantidad; index++) {
-            pagination.push({number: index + 1})            
+    res.render('modifications_consult', 
+        { 
+            title: 'Consult Modifications', 
+            isWithInterface: true, 
+            isHasMenuUserPermition: idRolUser == 1 ? true : false,
+            hasDowloadRecordPermition: idRolUser == 1 || idRolUser == 2 ? true : false,
+            countRecords: listModifications.length, 
+            listModifications: listModifications, 
         }
-    }
+    );
+});
+
+/* GET edit modification by id. */
+router.get('/edit/:modificationId', async (req, res) => {
+    let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
+    let modificationId = req.params.modificationId;
 
     if (idUser === undefined) {
         res.redirect('/login');
-    } else {
-        res.render('modifications_consult', 
-            { 
-                title: 'Consult Modifications', 
-                isWithInterface: true, 
-                isHasMenuUserPermition: idRolUser == 1 ? true : false,
-                hasDowloadRecordPermition: idRolUser == 1 || idRolUser == 2 ? true : false,
-                countRecords: listModifications.length, 
-                listModifications: listModifications, 
-                pagination: pagination
-            }
-        );
+        return;
     }
-});
 
-
-
-
-/* GET create user page. */
-router.get('/edit/:modificationId', async function(req, res, next) {
-    let idUser = req.cookies.idUser;
-    let idRolUser = req.cookies.idRole;
-    const modificationId = req.params.modificationId;
     let modification = await modificationService.getModificationById(modificationId);
     
     if(modification === "") {
@@ -83,13 +75,9 @@ router.get('/edit/:modificationId', async function(req, res, next) {
 
     let listOptionsTypeModification = await orderOptions(modification.mod_type_modification, listTypeModifications)
 
-    console.log(listOptionsTypeModification)
-
-    if (idUser === undefined) {
-        res.redirect('/login');
-    } else {
-        res.render('modifications_edit', 
-            { title: 'Edit User', 
+    res.render('modifications_edit', 
+        { 
+            title: 'Edit User', 
             isWithInterface: true,
             isHasMenuUserPermition: idRolUser == 1 ? true : false, 
             modification: modification, 
@@ -98,11 +86,11 @@ router.get('/edit/:modificationId', async function(req, res, next) {
             listOptionsTypeModification: listOptionsTypeModification
         }
     );
-    }
+
 });
 
-/* GET create user page. */
-router.post('/create/newModification', async function(req, res, next) {
+/* POST create new modification. */
+router.post('/create/newModification', async (req, res) => {
     let idUser = req.cookies.idUser;
 
     if (idUser === undefined) {
@@ -124,6 +112,7 @@ router.post('/create/newModification', async function(req, res, next) {
             mod_date_end: dateEnd,
             mod_count_day: countDays,
         }
+
         res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/create/newModification", listModifications: listOptionsTypeModification});
         return;
     }
@@ -134,29 +123,26 @@ router.post('/create/newModification', async function(req, res, next) {
 
 });
 
-/* GET create user page. */
-router.post('/delete/:modificationId', async function(req, res, next) {
+/* POST delete modification by id. */
+router.post('/delete/:modificationId', async (req, res) => {
     let idUser = req.cookies.idUser;
-
-    const modificationId = req.params.modificationId;
+    let modificationId = req.params.modificationId;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
     }
 
-
     await modificationService.deleteModificationById(modificationId)
 
     res.redirect('/modifications/consult/')
-
 });
 
-/* GET create user page. */
+/* POST update modification by id. */
 router.post('/update/:modificationId', async function(req, res, next) {
     let idUser = req.cookies.idUser;
     let idRolUser = req.cookies.idRole;
-    const modificationId = req.params.modificationId;
+    let modificationId = req.params.modificationId;
 
     if (idUser === undefined) {
         res.redirect('/login');
@@ -197,19 +183,30 @@ router.post('/update/:modificationId', async function(req, res, next) {
     res.redirect('/modifications/consult/')
 });
 
+/*GET dowload report of all modifications */
 router.get('/dowload', async (req, res, next) => {
     let idUser = req.cookies.idUser;
+
+    if (idUser === undefined) {
+        res.redirect('/login');
+        return;
+    }
+
     await generatorReportService.generateModificationsReport(idUser);
 
     let file = fs.readFileSync(path.join(__dirname, `../public/reports/${idUser}/modifications.xlsx`), 'binary');
 
     res.setHeader('Content-Length', file.length);
     res.setHeader('Content-disposition', 'attachment; filename=modifications.xlsx');
+
     res.write(file, 'binary')
 
     res.end();
 });
 
+/*FUCTIONS UTILS */
+
+/*Sorts the list of options and places the first parameter as the first option*/
 function orderOptions(first, listOptions) {
     list = [first]
 
