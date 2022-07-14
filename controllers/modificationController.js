@@ -7,10 +7,12 @@ const apprenticesService = require("../services/apprenticesService")
 router.get('/create', function(req, res, next) {
     let idUser = req.cookies.idUser;
 
+    listOptionsTypeModification = ["Incapacidad", "Fuerza Mayor o Caso Fortuito", "Licencia Paternidad", "Licencia Maternidad", "Vacaciones del Empleador"];
+
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('modifications_create', { title: 'Create New Modification', isWithInterface: true });
+        res.render('modifications_create', { title: 'Create New Modification', isWithInterface: true,  listOptionsTypeModification: listOptionsTypeModification});
     }
 });
 
@@ -54,10 +56,13 @@ router.get('/edit/:modificationId', async function(req, res, next) {
     let apprentice = await apprenticesService.getApprenticeById(modification.mod_apprentice_id);
     let apprentice_id = apprentice.app_identification;
 
+    listOptionsTypeModification = ["Incapacidad", "Fuerza Mayor o Caso Fortuito", "Licencia Paternidad", "Licencia Maternidad", "Vacaciones del Empleador"];
+    listOptionsTypeModification = await orderOptions(modification.mod_type_modification, listOptionsTypeModification)
+
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: apprentice_id, url: "/modifications/update/"});
+        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: apprentice_id, url: "/modifications/update/", listOptionsTypeModification: listOptionsTypeModification});
     }
 });
 
@@ -138,5 +143,17 @@ router.post('/update/:modificationId', async function(req, res, next) {
 
     res.redirect('/modifications/consult/')
 });
+
+function orderOptions(first, listOptions) {
+    list = [first]
+
+    listOptions.forEach(element => {
+        if (element != first) {
+            list.push(element)
+        }
+    });
+
+    return list;
+}
 
 module.exports = router;

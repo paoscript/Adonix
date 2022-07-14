@@ -62,9 +62,9 @@
                                 <label class="col-sm-4 col-form-label">Role</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="rolId" name="rolId">
-                                        <option value="1">Administrator</option>
-                                        <option value="2">Manager</option>
-                                        <option value="3">Employee</option>
+                                        {{#each roleList}}
+                                            <option value="{{this}}">{{this}}</option>
+                                        {{/each}}
                                     </select>
                                 </div>
                             </div>

@@ -2,20 +2,36 @@ var express = require('express');
 var router = express.Router();
 const apprenticesService = require("../services/apprenticesService");
 
+var svgaOptions = ["Yes", "No", "Pending"];
+var yieldedOptions = ["Yes", "No", "Studing"];
+var categoryOptions = ["Technical", "Technologist", "Professional"];
+var stateOptions = ["Lective", "Productive", "University"];
+var listCity = ["Amazonas","Antioquia","Arauca","Atlántico","Bogotá","Bolívar","Boyacá","Caldas","Caquetá","Casanare","Cauca","Cesar","Chocó","Córdoba","Cundinamarca","Guainía","Guaviare","Huila","La Guajira","Magdalena","Meta","Nariño","Norte de Santander","Putumayo","Quindío","Risaralda","San Andrés y Providencia","Santander","Sucre","Tolima","Valle del Cauca","Vaupés","Vichada"]
+
 
 /* GET main page. */
-router.get('/create', function(req, res, next) {
+router.get('/create', function (req, res, next) {
     let idUser = req.cookies.idUser;
 
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('apprentices_create', { title: 'Create New Apprentice', isWithInterface: true });
+        res.render('apprentices_create',
+            {
+                title: 'Create New Apprentice',
+                isWithInterface: true,
+                svgaOptions: svgaOptions,
+                yieldedOptions: yieldedOptions,
+                categoryOptions: categoryOptions,
+                stateOptions: stateOptions,
+                listCity: listCity
+            }
+        );
     }
 });
 
 /* GET main page. */
-router.get('/consult', async function(req, res, next) {
+router.get('/consult', async function (req, res, next) {
     let idUser = req.cookies.idUser;
 
     let listApprentices = await apprenticesService.getApprenticesList();
@@ -26,20 +42,28 @@ router.get('/consult', async function(req, res, next) {
         let cantidad = Math.ceil(listApprentices.length / 10)
 
         for (let index = 0; index < cantidad; index++) {
-            pagination.push({number: index + 1})            
+            pagination.push({ number: index + 1 })
         }
     }
 
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('apprentices_consult', { title: 'Consult Apprentices', isWithInterface: true, listApprentices: listApprentices, pagination: pagination, countRecords: listApprentices.length });
+        res.render('apprentices_consult',
+            {
+                title: 'Consult Apprentices',
+                isWithInterface: true,
+                listApprentices: listApprentices,
+                pagination: pagination,
+                countRecords: listApprentices.length
+            }
+        );
     }
 });
 
 
 /* GET create user page. */
-router.post('/create/newApprentice', async function(req, res, next) {
+router.post('/create/newApprentice', async function (req, res, next) {
     let idUser = req.cookies.idUser;
 
     console.log(idUser)
@@ -64,7 +88,7 @@ router.post('/create/newApprentice', async function(req, res, next) {
 
 
 /* GET create user page. */
-router.post('/delete/:apprenticeId', async function(req, res, next) {
+router.post('/delete/:apprenticeId', async function (req, res, next) {
     let idUser = req.cookies.idUser;
 
     const apprenticeId = req.params.apprenticeId;
@@ -74,7 +98,7 @@ router.post('/delete/:apprenticeId', async function(req, res, next) {
         return;
     }
 
-    
+
     await apprenticesService.deleteApprenticeById(apprenticeId)
 
     res.redirect('/apprentices/consult/')
@@ -82,35 +106,49 @@ router.post('/delete/:apprenticeId', async function(req, res, next) {
 });
 
 /* GET create user page. */
-router.get('/edit/:apprenticeId', async function(req, res, next) {
+router.get('/edit/:apprenticeId', async function (req, res, next) {
     let idUser = req.cookies.idUser;
-    const apprenticeId = req.params.apprenticeId;
-    let apprentice = await apprenticesService.getApprenticeById(apprenticeId);
-    let svga = "";
 
-    switch (apprentice.app_sgva) {
-        case 1:
-            svga = "Yes";
-            break;
-        case 1:
-            svga = "No"
-            break;
-        case 1:
-            svga = "Pendig"
-            break;
-    }
-
-    console.log(apprentice)
-    
     if (idUser === undefined) {
         res.redirect('/login');
-    } else {
-        res.render('apprentices_edit', { title: 'Update User', isWithInterface: true, apprentice: apprentice, svga: svga, contratStartDate: parseToDate(apprentice.app_contract_start_date), endDateStudy: parseToDate(apprentice.app_end_date_study), productiveStartDate: parseToDate(apprentice.app_productive_start_date), productiveEndDate: parseToDate(apprentice.app_productive_end_date), birthday: parseToDate(apprentice.app_birthday) });
+        return;
     }
+
+    const apprenticeId = req.params.apprenticeId;
+    let apprentice = await apprenticesService.getApprenticeById(apprenticeId);
+
+    if (apprentice === undefined) {
+        res.redirect('/users/edit/errors/error-404.html');
+        return;
+    }
+
+    var svgaOptionsResult = orderOptions(apprentice.app_sgva, stateOptions);
+    var yieldedOptionsResult = orderOptions(apprentice.app_yielded, yieldedOptions);
+    var categoryOptionsResult = orderOptions(apprentice.app_category, categoryOptions);
+    var stateOptionsResult = orderOptions(apprentice.app_state, stateOptions);
+    var listCityResult = orderOptions(apprentice.app_city, listCity)
+
+    res.render('apprentices_edit',
+        {
+            title: 'Update User',
+            isWithInterface: true,
+            apprentice: apprentice,
+            contratStartDate: parseToDate(apprentice.app_contract_start_date),
+            endDateStudy: parseToDate(apprentice.app_end_date_study),
+            productiveStartDate: parseToDate(apprentice.app_productive_start_date),
+            productiveEndDate: parseToDate(apprentice.app_productive_end_date),
+            birthday: parseToDate(apprentice.app_birthday),
+            svgaOptions: svgaOptionsResult,
+            yieldedOptions: yieldedOptionsResult,
+            categoryOptions: categoryOptionsResult,
+            stateOptions: stateOptionsResult,
+            listCity: listCityResult
+        }
+    );
 });
 
 /* GET create user page. */
-router.post('/update/:apprenticeId', async function(req, res, next) {
+router.post('/update/:apprenticeId', async function (req, res, next) {
     let idUser = req.cookies.idUser;
     const apprenticeId = req.params.apprenticeId;
 
@@ -152,6 +190,19 @@ function parseToDate(date) {
     let fechaParseada = año + "-" + mes + "-" + dia;
     console.log(fechaParseada)
     return fechaParseada
+}
+
+
+function orderOptions(first, listOptions) {
+    list = [first]
+
+    listOptions.forEach(element => {
+        if (element != first) {
+            list.push(element)
+        }
+    });
+
+    return list;
 }
 
 module.exports = router;

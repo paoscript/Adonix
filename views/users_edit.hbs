@@ -65,8 +65,10 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Role</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" disabled name="rolId" id="rolId">
-                                        <option>{{rolName}}</option>
+                                    <select class="form-control" name="rolId" id="rolId">
+                                        {{#each roleList}}
+                                            <option value="{{this}}">{{this}}</option>
+                                        {{/each}}
                                     </select>
                                 </div>
                             </div>

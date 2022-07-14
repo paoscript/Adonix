@@ -69,9 +69,9 @@
                             <label class="col-sm-3 col-form-label">SGVA</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="sgva" name="sgva">
-                                    <option value="1">Yes</option>
-                                    <option value="2">No</option>
-                                    <option value="3">Pending</option>
+                                    {{#each svgaOptions}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -152,7 +152,11 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">City</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="City" name="city" id="city" />
+                                <select class="form-control" name="city" id="city">
+                                    {{#each listCity}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -199,9 +203,9 @@
                             <label class="col-sm-3 col-form-label">Category</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="category" id="category">
-                                    <option>Technical</option>
-                                    <option>Technologist</option>
-                                    <option>Professional</option>
+                                    {{#each categoryOptions}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -211,9 +215,9 @@
                             <label class="col-sm-3 col-form-label">Yielded</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="yielded" id="yielded">
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                    <option>Studing</option>
+                                    {{#each yieldedOptions}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -225,9 +229,9 @@
                             <label class="col-sm-3 col-form-label">State</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="state" id="state">
-                                    <option>Lective</option>
-                                    <option>Productive</option>
-                                    <option>University</option>
+                                    {{#each stateOptions}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>

@@ -17,9 +17,9 @@
                             <label class="col-sm-3 col-form-label">Tipo Modificación</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="typeModification" name="typeModification">
-                                    <option value="Licencia Maternidad">Licencia Maternidad</option>
-                                    <option value="Discapacidad">Discapacidad</option>
-                                    <option value="Ampliación">Ampliación</option>
+                                    {{#each listOptionsTypeModification}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>

@@ -25,7 +25,7 @@ exports.getUserList = async () => {
 
 exports.getUserById = async (userId) => {
     
-    let rows = await query("select u.use_id, u.use_identification_number, u.use_name, u.use_email, u.use_rol_id from users as u where u.use_id = ?", [userId]);
+    let rows = await query("select u.use_id, u.use_identification_number, u.use_name, u.use_email, u.use_rol_id, u.use_password from users as u where u.use_id = ?", [userId]);
 
     if (rows.length === 0) {
         return "";

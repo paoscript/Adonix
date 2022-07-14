@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const userManagement = require("../services/userManager");
 
+var roleList = ["Administrator", "Manager", "Employee"];
+
 /* GET create user page. */
 router.get('/create', function(req, res, next) {
     let idUser = req.cookies.idUser;
@@ -9,7 +11,7 @@ router.get('/create', function(req, res, next) {
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('users_create', { title: 'Create New User', isWithInterface: true });
+        res.render('users_create', { title: 'Create New User', isWithInterface: true,  roleList: roleList});
     }
 });
 
@@ -44,33 +46,29 @@ router.get('/edit/:userId', async function(req, res, next) {
     let idUser = req.cookies.idUser;
     const userId = req.params.userId;
     let user = await userManagement.getUserById(userId);
-    let userRol = ""
     
-    console.log(user);
-
     if(user === "") {
         res.redirect('/users/edit/errors/error-404.html');
         return;
     }
 
-    switch (user.use_rol_id) {
-        case 1:
-            userRol = "Administrator"
-            break;
-    
-        case 2:
-            userRol = "Manager"
-            break;
+    let roleName = "";
+    let rolId = user.use_rol_id
 
-        case 3:
-            userRol = "Employee"
-            break;
+    if(rolId == 1) {
+        roleName = "Administrator";
+    } else if(rolId == 2){
+        roleName = "Manager";
+    } else if (rolId == 3) {
+        roleName = "Employee";
     }
 
+    let roleListResult = orderOptions(roleName, roleList);
+    
     if (idUser === undefined) {
         res.redirect('/login');
     } else {
-        res.render('users_edit', { title: 'Edit User', isWithInterface: true, user: user, rolName: userRol});
+        res.render('users_edit', { title: 'Edit User', isWithInterface: true, user: user, roleList: roleListResult});
     }
 });
 
@@ -134,5 +132,17 @@ router.post('/update/:userId', async function(req, res, next) {
 
     res.redirect('/users/consult/')
 });
+
+function orderOptions(first, listOptions) {
+    list = [first]
+
+    listOptions.forEach(element => {
+        if (element != first) {
+            list.push(element)
+        }
+    });
+
+    return list;
+}
 
 module.exports = router;
