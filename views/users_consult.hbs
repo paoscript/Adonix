@@ -18,10 +18,12 @@
                             <i class="fa-solid fa-plus"></i> Create New Record
                         </button>
                         {{#if hasDowloadRecordPermition}}
-                        <button type="button" class="btn btn-warning btn-icon-text">
-                            <i class="fa-solid fa-download"></i>
-                            Download Records
-                        </button>
+                        <a href="/users/dowload" download="report_users.xlsx">
+                            <button type="button" class="btn btn-warning btn-icon-text">
+                                <i class="fa-solid fa-download"></i>
+                                Download Records
+                            </button>
+                        </a>
                         {{/if}}
                     </div>
                 </div>
@@ -79,15 +81,16 @@
                             <td>{{use_email}}</td>
                             <td>{{use_rol_id}}</td>
                             <td>
-                                <p data-placement="top" data-toggle="tooltip" title="Edit"><button onclick="window.location.href='/users/edit/{{use_id}}/'"
+                                <p data-placement="top" data-toggle="tooltip" title="Edit"><button
+                                        onclick="window.location.href='/users/edit/{{use_id}}/'"
                                         class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"
                                         data-target="#edit"><span><i class="fa-solid fa-pen-clip"></i></span></button>
                                 </p>
                             </td>
                             <td>
-                                <p data-placement="top" data-toggle="tooltip" title="Delete"><button onclick="deleteRecord({{use_id}})"
-                                        class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal"
-                                        data-target="#delete"><span><i
+                                <p data-placement="top" data-toggle="tooltip" title="Delete"><button
+                                        onclick="deleteRecord({{use_id}})" class="btn btn-danger btn-xs"
+                                        data-title="Delete" data-toggle="modal" data-target="#delete"><span><i
                                                 class="fa-solid fa-trash-can"></i></span></button></p>
                             </td>
                         </tr>
@@ -139,7 +142,7 @@
             xhr.send();
 
             location.reload()
-        }       
-        
+        }
+
     }
 </script>

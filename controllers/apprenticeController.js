@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const apprenticesService = require("../services/apprenticesService");
+const generatorReportService = require("../services/generatorReportService");
+const fs = require('fs')
+const path = require('path')
 
 var svgaOptions = ["Yes", "No", "Pending"];
 var yieldedOptions = ["Yes", "No", "Studing"];
@@ -172,6 +175,19 @@ router.post('/update/:apprenticeId', async function (req, res, next) {
         email, eps, city, institution, specility, nameBoss, ccmsBoss, category, yielded, state, contratStartDate, endDateStudy, productiveStartDate, productiveEndDate, countDays, phoneNumber, company, apprenticeId);
 
     res.redirect('/apprentices/consult/')
+});
+
+router.get('/dowload', async (req, res, next) => {
+    let idUser = req.cookies.idUser;
+    await generatorReportService.generateApprenticesReport(idUser);
+
+    let file = fs.readFileSync(path.join(__dirname, `../public/reports/${idUser}/apprentices.xlsx`), 'binary');
+
+    res.setHeader('Content-Length', file.length);
+    res.setHeader('Content-disposition', 'attachment; filename=apprentices.xlsx');
+    res.write(file, 'binary')
+
+    res.end();
 });
 
 function parseToDate(date) {

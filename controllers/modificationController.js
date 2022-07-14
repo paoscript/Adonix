@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const modificationService = require("../services/modificationService");
-const apprenticesService = require("../services/apprenticesService")
+const apprenticesService = require("../services/apprenticesService");
+const generatorReportService = require("../services/generatorReportService");
+const fs = require('fs')
+const path = require('path')
 
 /* GET create user page. */
 router.get('/create', function(req, res, next) {
@@ -171,6 +174,19 @@ router.post('/update/:modificationId', async function(req, res, next) {
     await modificationService.updateModificationById(typeModification, dateStart, dateEnd, countDays, apprentice.app_id, modificationId);
 
     res.redirect('/modifications/consult/')
+});
+
+router.get('/dowload', async (req, res, next) => {
+    let idUser = req.cookies.idUser;
+    await generatorReportService.generateModificationsReport(idUser);
+
+    let file = fs.readFileSync(path.join(__dirname, `../public/reports/${idUser}/modifications.xlsx`), 'binary');
+
+    res.setHeader('Content-Length', file.length);
+    res.setHeader('Content-disposition', 'attachment; filename=modifications.xlsx');
+    res.write(file, 'binary')
+
+    res.end();
 });
 
 function orderOptions(first, listOptions) {

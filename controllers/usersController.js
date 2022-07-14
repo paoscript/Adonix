@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const userManagement = require("../services/userManager");
+const generatorReportService = require("../services/generatorReportService");
+const fs = require('fs')
+const path = require('path')
 
 var roleList = ["Administrator", "Manager", "Employee"];
 
@@ -159,6 +162,19 @@ router.post('/update/:userId', async function(req, res, next) {
     await userManagement.updateUserById(numberIdentification, userName, email, userId);
 
     res.redirect('/users/consult/')
+});
+
+router.get('/dowload', async (req, res, next) => {
+    let idUser = req.cookies.idUser;
+    await generatorReportService.generateUsersReport(idUser);
+
+    let file = fs.readFileSync(path.join(__dirname, `../public/reports/${idUser}/users.xlsx`), 'binary');
+
+    res.setHeader('Content-Length', file.length);
+    res.setHeader('Content-disposition', 'attachment; filename=users.xlsx');
+    res.write(file, 'binary')
+
+    res.end();
 });
 
 function orderOptions(first, listOptions) {

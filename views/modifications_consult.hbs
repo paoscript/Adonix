@@ -15,10 +15,12 @@
                             <i class="fa-solid fa-plus"></i> Create New Record
                         </button>
                         {{#if hasDowloadRecordPermition}}
-                        <button type="button" class="btn btn-warning btn-icon-text">
-                            <i class="fa-solid fa-download"></i>
-                            Download Records
-                        </button>
+                        <a href="/modifications/dowload" download="report_modifications.xlsx">
+                            <button type="button" class="btn btn-warning btn-icon-text" >
+                                <i class="fa-solid fa-download"></i>
+                                Download Records
+                            </button>
+                        </a>
                         {{/if}}
                     </div>
                 </div>
