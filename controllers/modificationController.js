@@ -81,8 +81,9 @@ router.get('/edit/:modificationId', async function(req, res, next) {
     let apprentice = await apprenticesService.getApprenticeById(modification.mod_apprentice_id);
     let apprentice_id = apprentice.app_identification;
 
-    let listOptionsTypeModification = listTypeModifications;
-    listOptionsTypeModification = await orderOptions(modification.mod_type_modification, listOptionsTypeModification)
+    let listOptionsTypeModification = await orderOptions(modification.mod_type_modification, listTypeModifications)
+
+    console.log(listOptionsTypeModification)
 
     if (idUser === undefined) {
         res.redirect('/login');
@@ -94,7 +95,7 @@ router.get('/edit/:modificationId', async function(req, res, next) {
             modification: modification, 
             apprentice_id: apprentice_id, 
             url: "/modifications/update/", 
-            listModifications: listOptionsTypeModification
+            listOptionsTypeModification: listOptionsTypeModification
         }
     );
     }
@@ -154,6 +155,7 @@ router.post('/delete/:modificationId', async function(req, res, next) {
 /* GET create user page. */
 router.post('/update/:modificationId', async function(req, res, next) {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
     const modificationId = req.params.modificationId;
 
     if (idUser === undefined) {
@@ -175,7 +177,18 @@ router.post('/update/:modificationId', async function(req, res, next) {
             mod_date_end: dateEnd,
             mod_count_day: countDays,
         }
-        res.render('modifications_edit', { title: 'Edit User', isWithInterface: true, modification: modification, apprentice_id: documentId, alerta: true, url: "/modifications/update/", listModifications: listOptionsTypeModification});
+        res.render('modifications_edit', 
+            { 
+                title: 'Edit User', 
+                isWithInterface: true,
+                isHasMenuUserPermition: idRolUser == 1 ? true : false, 
+                modification: modification, 
+                apprentice_id: documentId, 
+                alerta: true, 
+                url: "/modifications/update/", 
+                listOptionsTypeModification: listOptionsTypeModification
+            }
+        );
         return;
     }
 

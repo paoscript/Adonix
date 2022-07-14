@@ -9,55 +9,47 @@ var svgaOptions = ["Yes", "No", "Pending"];
 var yieldedOptions = ["Yes", "No", "Studing"];
 var categoryOptions = ["Technical", "Technologist", "Professional"];
 var stateOptions = ["Lective", "Productive", "University"];
-var listCity = ["Amazonas","Antioquia","Arauca","Atlántico","Bogotá","Bolívar","Boyacá","Caldas","Caquetá","Casanare","Cauca","Cesar","Chocó","Córdoba","Cundinamarca","Guainía","Guaviare","Huila","La Guajira","Magdalena","Meta","Nariño","Norte de Santander","Putumayo","Quindío","Risaralda","San Andrés y Providencia","Santander","Sucre","Tolima","Valle del Cauca","Vaupés","Vichada"]
+var listCity = ["Amazonas","Antioquia","Arauca","Atlántico","Bogotá","Bolívar","Boyacá","Caldas","Caquetá",
+                "Casanare","Cauca","Cesar","Chocó","Córdoba","Cundinamarca","Guainía","Guaviare","Huila",
+                "La Guajira","Magdalena","Meta","Nariño","Norte de Santander","Putumayo","Quindío","Risaralda",
+                "San Andrés y Providencia","Santander","Sucre","Tolima","Valle del Cauca","Vaupés","Vichada"];
 
-
-/* GET main page. */
-router.get('/create', function (req, res, next) {
+/* GET create apprentice page. */
+router.get('/create', (req, res) => {
     let idUser = req.cookies.idUser;
     let idRolUser = req.cookies.idRole;
-
-    if (idUser === undefined) {
-        res.redirect('/login');
-    } else {
-        res.render('apprentices_create',
-            {
-                title: 'Create New Apprentice',
-                isHasMenuUserPermition: idRolUser == 1 ? true : false,
-                isWithInterface: true,
-                svgaOptions: svgaOptions,
-                yieldedOptions: yieldedOptions,
-                categoryOptions: categoryOptions,
-                stateOptions: stateOptions,
-                listCity: listCity
-            }
-        );
-    }
-});
-
-/* GET main page. */
-router.get('/consult', async function (req, res, next) {
-    let idUser = req.cookies.idUser;
-    let idRolUser = req.cookies.idRole;
-
-    let listApprentices = await apprenticesService.getApprenticesList();
-
-    let pagination = []
-
-    if (listApprentices.length > 0) {
-        let cantidad = Math.ceil(listApprentices.length / 10)
-
-        for (let index = 0; index < cantidad; index++) {
-            pagination.push({ number: index + 1 })
-        }
-    }
-
-    listApprentices = ajustDateForListApprentices(listApprentices);
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
     } 
+
+    res.render('apprentices_create',
+        {
+            title: 'Create New Apprentice',
+            isHasMenuUserPermition: idRolUser == 1 ? true : false,
+            isWithInterface: true,
+            svgaOptions: svgaOptions,
+            yieldedOptions: yieldedOptions,
+            categoryOptions: categoryOptions,
+            stateOptions: stateOptions,
+            listCity: listCity
+        }
+    );
+});
+
+/* GET consult apprentice page. */
+router.get('/consult', async (req, res) => {
+    let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
+
+    if (idUser === undefined) {
+        res.redirect('/login');
+        return;
+    } 
+
+    let listApprentices = await apprenticesService.getApprenticesList();
+    listApprentices = ajustDateForListApprentices(listApprentices);
 
     res.render('apprentices_consult',
         {
@@ -70,64 +62,57 @@ router.get('/consult', async function (req, res, next) {
             countRecords: listApprentices.length
         }
     );
-
 });
 
 
-/* GET create user page. */
-router.post('/create/newApprentice', async function (req, res, next) {
+/* POST create new apprentice. */
+router.post('/create/newApprentice', async (req, res) => {
     let idUser = req.cookies.idUser;
-
-    console.log(idUser)
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
     }
-
-    console.log(req.body);
 
     let { identification, idCCMS, name, group, sgva, ceco, jobDescription, relatedPosition, payment, birthday, address, email, eps, city,
         institution, specility, nameBoss, ccmsBoss, category, yielded, state, contratStartDate, company, endDateStudy, productiveStartDate,
         productiveEndDate, countDays, phoneNumber } = req.body;
 
-    await apprenticesService.createNewApprentice(identification, name, idCCMS, sgva, group, ceco, jobDescription, relatedPosition, payment, birthday, address,
-        email, eps, city, institution, specility, nameBoss, ccmsBoss, category, yielded, state, contratStartDate, endDateStudy, productiveStartDate, productiveEndDate, countDays, phoneNumber, company, idUser);
+    await apprenticesService.createNewApprentice(identification, name, idCCMS, sgva, group, ceco, jobDescription, relatedPosition, 
+                                                    payment, birthday, address, email, eps, city, institution, specility, nameBoss, 
+                                                    ccmsBoss, category, yielded, state, contratStartDate, endDateStudy, productiveStartDate, 
+                                                    productiveEndDate, countDays, phoneNumber, company, idUser);
 
-    res.redirect('/apprentices/consult/')
-
+    res.redirect('/apprentices/consult/');
 });
 
 
-/* GET create user page. */
-router.post('/delete/:apprenticeId', async function (req, res, next) {
+/* POST delete apprentice by id. */
+router.post('/delete/:apprenticeId', async (req, res) => {
     let idUser = req.cookies.idUser;
-
-    const apprenticeId = req.params.apprenticeId;
+    let apprenticeId = req.params.apprenticeId;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
     }
-
 
     await apprenticesService.deleteApprenticeById(apprenticeId)
 
     res.redirect('/apprentices/consult/')
-
 });
 
-/* GET create user page. */
-router.get('/edit/:apprenticeId', async function (req, res, next) {
+/* GET edit apprentice by id. */
+router.get('/edit/:apprenticeId', async (req, res) => {
     let idUser = req.cookies.idUser;
     let idRolUser = req.cookies.idRole;
+    let apprenticeId = req.params.apprenticeId;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
     }
 
-    const apprenticeId = req.params.apprenticeId;
     let apprentice = await apprenticesService.getApprenticeById(apprenticeId);
 
     if (apprentice === undefined) {
@@ -135,11 +120,11 @@ router.get('/edit/:apprenticeId', async function (req, res, next) {
         return;
     }
 
-    var svgaOptionsResult = orderOptions(apprentice.app_sgva, stateOptions);
-    var yieldedOptionsResult = orderOptions(apprentice.app_yielded, yieldedOptions);
-    var categoryOptionsResult = orderOptions(apprentice.app_category, categoryOptions);
-    var stateOptionsResult = orderOptions(apprentice.app_state, stateOptions);
-    var listCityResult = orderOptions(apprentice.app_city, listCity)
+    let svgaOptionsResult = orderOptions(apprentice.app_sgva, stateOptions);
+    let yieldedOptionsResult = orderOptions(apprentice.app_yielded, yieldedOptions);
+    let categoryOptionsResult = orderOptions(apprentice.app_category, categoryOptions);
+    let stateOptionsResult = orderOptions(apprentice.app_state, stateOptions);
+    let listCityResult = orderOptions(apprentice.app_city, listCity)
 
     res.render('apprentices_edit',
         {
@@ -161,8 +146,8 @@ router.get('/edit/:apprenticeId', async function (req, res, next) {
     );
 });
 
-/* GET create user page. */
-router.post('/update/:apprenticeId', async function (req, res, next) {
+/* POST update apprentice by id. */
+router.post('/update/:apprenticeId', async (req, res) => {
     let idUser = req.cookies.idUser;
     const apprenticeId = req.params.apprenticeId;
 
@@ -175,14 +160,23 @@ router.post('/update/:apprenticeId', async function (req, res, next) {
         institution, specility, nameBoss, ccmsBoss, category, yielded, state, contratStartDate, company, endDateStudy, productiveStartDate,
         productiveEndDate, countDays, phoneNumber } = req.body;
 
-    await apprenticesService.updateApprenticeById(identification, name, idCCMS, sgva, group, ceco, jobDescription, relatedPosition, payment, birthday, address,
-        email, eps, city, institution, specility, nameBoss, ccmsBoss, category, yielded, state, contratStartDate, endDateStudy, productiveStartDate, productiveEndDate, countDays, phoneNumber, company, apprenticeId);
+    await apprenticesService.updateApprenticeById(identification, name, idCCMS, sgva, group, ceco, jobDescription, relatedPosition, payment, 
+                                                    birthday, address, email, eps, city, institution, specility, nameBoss, ccmsBoss, category, 
+                                                    yielded, state, contratStartDate, endDateStudy, productiveStartDate, productiveEndDate, 
+                                                    countDays, phoneNumber, company, apprenticeId);
 
-    res.redirect('/apprentices/consult/')
+    res.redirect('/apprentices/consult/');
 });
 
-router.get('/dowload', async (req, res, next) => {
+/* Get dowload report of all apprentices. */
+router.get('/dowload', async (req, res) => {
     let idUser = req.cookies.idUser;
+
+    if (idUser === undefined) {
+        res.redirect('/login');
+        return;
+    }
+
     await generatorReportService.generateApprenticesReport(idUser);
 
     let file = fs.readFileSync(path.join(__dirname, `../public/reports/${idUser}/apprentices.xlsx`), 'binary');
@@ -194,6 +188,9 @@ router.get('/dowload', async (req, res, next) => {
     res.end();
 });
 
+/* FUCTIONS UTILS */
+
+/* Return a list of aprentices with date parsed */
 function ajustDateForListApprentices(listApprentices) {
     
     listApprentices.forEach(apprentice => {
@@ -205,27 +202,28 @@ function ajustDateForListApprentices(listApprentices) {
 
 }
 
+/* Return date parsed */
 function parseToDate(date) {
 
     if (date === null) {
         return "";
     }
-    let fecha = date
-    let año = fecha.getFullYear()
-    let mes = fecha.getMonth() + 1
-    let dia = fecha.getDate()
 
-    if (dia < 10) {
-        dia = `0${dia}`;
+    let year = date.getFullYear()
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+
+    if (day < 10) {
+        day = `0${day}`;
     }
 
-    if (mes < 10) {
-        mes = `0${mes}`;
+    if (month < 10) {
+        month = `0${month}`;
     }
 
-    let fechaParseada = año + "-" + mes + "-" + dia;
+    let dateParsed = year + "-" + month + "-" + day;
 
-    return fechaParseada
+    return dateParsed
 }
 
 
