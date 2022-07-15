@@ -5,7 +5,7 @@ const generatorReportService = require("../services/generatorReportService");
 const fs = require('fs')
 const path = require('path')
 
-var roleList = ["Administrator", "Manager", "Employee"];
+var roleList = ["Employee","Administrator", "Manager"];
 
 /* GET create user page. */
 router.get('/create', (req, res) => {

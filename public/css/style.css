@@ -9,6 +9,10 @@
     margin-right: 5%;
 }
 
+.invalid {
+    border: 2px solid #ff0000;
+}
+
 
 @media (max-width: 600px) {
     #searchElementContainer {
