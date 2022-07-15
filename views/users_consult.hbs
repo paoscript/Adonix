@@ -8,52 +8,34 @@
         <h4>Consult Users</h4>
 
         <br>
-        <div class="container">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-5 ">
-                    <div class="container">
-                        <button type="button" class="btn btn-success btn-icon-text"
-                            onclick="window.location.href='/users/create/'">
-                            <i class="fa-solid fa-plus"></i> Create New Record
-                        </button>
-                        {{#if hasDowloadRecordPermition}}
-                        <a href="/users/dowload" download="report_users.xlsx">
-                            <button type="button" class="btn btn-warning btn-icon-text">
+        
+        <div class="row pl-1 pr-1">
+                    <div class="form-group row ">
+                        <div class="container">
+                            <button type="button" class="btn btn-success btn-icon-text" onclick="window.location.href='/users/create/'">
+                                <i class="fa-solid fa-plus"></i> Create New Record
+                            </button>
+                        </div>
+                    </div>
+                    {{#if hasDowloadRecordPermition}}
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <div class="form-group row ml-1 mr-2">
+                        <a href="/users/dowload" download="report_apprentices.xlsx">
+                            <button type="button" class="btn btn-warning btn-icon-text" >
                                 <i class="fa-solid fa-download"></i>
                                 Download Records
                             </button>
                         </a>
-                        {{/if}}
                     </div>
+                    {{/if}}
                 </div>
-            </div>
-        </div>
-
-        <br>
-
-        <div class="container">
-            <div class="row">
-
-                <div class="col-1">
-                    {{!-- <div class="row">
-                        <p>Show &nbsp</p>
-                        <select style="height: 20px;">
-                            <option>10</option>
-                            <option>50</option>
-                            <option>100</option>
-                        </select>
-                        <p>&nbsprecords</p>
-                    </div> --}}
-                </div>
-
-                <div class="col-3 ">
+                
+                <div class="container" id="searchElementContainer">
                     <div class="input-group rounded">
-                        <input type="search" class="form-control rounded" placeholder="Search 🔍" aria-label="Search"
-                            aria-describedby="search-addon" onchange="searchIntoTable()" id="searchElement" />
+                        <input type="text" class="form-control rounded" placeholder="Search 🔍" aria-label="Search"
+                            aria-describedby="search-addon" id="searchElement" onchange="searchIntoTable()" />
                     </div>
                 </div>
-            </div>
         </div>
 
         <br>
