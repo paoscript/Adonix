@@ -28,7 +28,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Number Identification of Apprentice</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" placeholder="Document ID" name="documentId"
+                                <input type="number" class="form-control" placeholder="Document ID" name="documentId" onchange="validateInput('documentId')"
                                     id="documentId" value="{{apprentice_id}}" required />
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Date Init</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="dateStart"
+                                <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="dateStart" onchange="validateInput('dateStart'); validateDates()"
                                     name="dateStart" value="{{modification.mod_date_start}}" />
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Date End</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" placeholder="Number" id="dateEnd" name="dateEnd"
+                                <input type="date" class="form-control" placeholder="Number" id="dateEnd" name="dateEnd" onchange="calcularDias(); validateInput('dateEnd'); validateDates()"
                                     onchange="calcularDias()" value="{{modification.mod_date_end}}" />
                             </div>
                         </div>
@@ -154,6 +154,45 @@
                 </div>
             </div>
         </div>
+        <!-- Error Form -->
+        <div class="modal fade" id="formInvalid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Form Incomplete.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some fields are not filled in, please validate.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Form -->
+        <div class="modal fade" id="dateError" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error in date assignment.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Error in dates, Date Init must not be greater than Date End.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -170,7 +209,71 @@
     }
 
     function enviarFormulario() {
-        document.getElementById("updateModification").submit();
+        var typeModification = document.getElementById("typeModification");
+        var documentId = document.getElementById("documentId");
+        var dateStart = document.getElementById("dateStart");
+        var dateEnd = document.getElementById("dateEnd");
+
+        var isFormValid = true;
+
+        if (typeModification.value == "") {
+            typeModification.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (documentId.value == "") {
+            documentId.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (dateStart.value == "") {
+            dateStart.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (dateEnd.value == "") {
+            dateEnd.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        var isValidDates = validateDates();
+
+        if (isValidDates) {
+            if (isFormValid ) {
+                document.getElementById("updateModification").submit();
+            } else {
+                $("#formInvalid").modal('show');
+            }
+        }
+    }
+
+    function validateInput(inputId) {
+        var inputToValidate = document.getElementById(inputId);
+
+        if (inputToValidate.value == "") {
+            inputToValidate.classList.add("invalid");
+        } else {
+            inputToValidate.classList.remove("invalid")
+        }
+    }
+
+    function validateDates() {
+        var dateStart = document.getElementById('dateStart');
+        var dateEnd = document.getElementById('dateEnd');
+
+        var fechaini = new Date(dateStart.value + 'T00:00');
+        var fechafin = new Date(dateEnd.value + 'T00:00');
+
+        if (fechaini > fechafin) {
+            dateStart.classList.add("invalid");
+            dateEnd.classList.add("invalid");
+
+            $("#dateError").modal('show');
+
+            return false;
+        }
+
+        return true;
     }
 
     function calcularDias() {
