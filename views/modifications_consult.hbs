@@ -1,11 +1,13 @@
 <!-- Consultar Apprentices -->
 
 <br>
-<div class="container">
-    <div class="col-md-20">
+<div class="">
+
+
+    <div class="col-md-10">
         <h4>Consult Modifications</h4>
+
         <br>
-        
         <div class="row pl-1 pr-1">
                     <div class="form-group row ">
                         <div class="container">
@@ -17,7 +19,7 @@
                     {{#if hasDowloadRecordPermition}}
                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                     <div class="form-group row ml-1 mr-2">
-                        <a href="/modifications/dowload" download="report_apprentices.xlsx">
+                        <a href="/modifications/dowload" download="report_modifications.xlsx">
                             <button type="button" class="btn btn-warning btn-icon-text" >
                                 <i class="fa-solid fa-download"></i>
                                 Download Records
@@ -35,29 +37,17 @@
                 </div>
         </div>
 
+    </div>
         <br>
         <div class="container">
             <div class="row">
                 <div class="col-9 ">
                     <p>Showing {{countRecords}} entries</p>
                 </div>
-                <!--
-                <div class="col-1 ">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            {{#each pagination}}
-                            <li class="page-item"><a class="page-link" href="#">{{number}}</a></li>
-                            {{/each}}
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                -->
             </div>
         </div>
 
-        <div class="container">
+        <div id="tableConsult">
             <div class="table-responsive">
 
 
