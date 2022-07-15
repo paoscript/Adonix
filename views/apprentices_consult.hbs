@@ -8,43 +8,36 @@
         <h4>Consult Apprentices</h4>
 
         <br>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-6">
-                    <div class="container">
-                        <button type="button" class="btn btn-success btn-icon-text"
-                            onclick="window.location.href='/apprentices/create/'">
-                            <i class="fa-solid fa-plus"></i> Create New Record
-                        </button>
-                        {{#if hasDowloadRecordPermition}}
+        <div class="row pl-1 pr-1">
+                    <div class="form-group row ">
+                        <div class="container">
+                            <button type="button" class="btn btn-success btn-icon-text" onclick="window.location.href='/apprentices/create/'">
+                                <i class="fa-solid fa-plus"></i> Create New Record
+                            </button>
+                        </div>
+                    </div>
+                    {{#if hasDowloadRecordPermition}}
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <div class="form-group row ml-1 mr-2">
                         <a href="/apprentices/dowload" download="report_apprentices.xlsx">
                             <button type="button" class="btn btn-warning btn-icon-text" >
                                 <i class="fa-solid fa-download"></i>
                                 Download Records
                             </button>
                         </a>
-                        {{/if}}
                     </div>
+                    {{/if}}
                 </div>
-            </div>
-        </div>
-
-        <br>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-3">
+                
+                <div class="container" id="searchElementContainer">
                     <div class="input-group rounded">
-                        <input type="search" class="form-control rounded" placeholder="Search 🔍" aria-label="Search"
+                        <input type="text" class="form-control rounded" placeholder="Search 🔍" aria-label="Search"
                             aria-describedby="search-addon" id="searchElement" onchange="searchIntoTable()" />
                     </div>
                 </div>
-            </div>
         </div>
 
+    </div>
         <br>
         <div class="container">
             <div class="row">

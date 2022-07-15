@@ -43,6 +43,8 @@ router.get('/consult', async (req, res) => {
     let idUser = req.cookies.idUser;
     let idRolUser = req.cookies.idRole;
 
+
+
     if (idUser === undefined) {
         res.redirect('/login');
         return;

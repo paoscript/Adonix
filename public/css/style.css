@@ -1,0 +1,13 @@
+
+#searchElementContainer {
+    width: 50%;
+    margin-right: 50%;
+}
+
+
+@media (max-width: 600px) {
+    #searchElementContainer {
+        width: 90%;
+        margin-right: 5%;
+    }
+}
