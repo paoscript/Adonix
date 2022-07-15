@@ -28,7 +28,13 @@ router.post('/', async (req, res) => {
     let infoLogin = await userManagement.validateLogin(numberIdentification, password);
 
     if (!infoLogin.isLogin) {
-        res.redirect('/login');
+        res.render('login', 
+            {
+                title: 'Welcome to Adonix! 🤩 🚀', 
+                isWithInterface: false,
+                alerta: true
+            }
+        );
         return;
     } 
 
