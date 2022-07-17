@@ -16,6 +16,11 @@ router.get('/create', (req, res) => {
         res.redirect('/login');
         return;
     }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
+    }
     
     res.render('users_create', 
         { 
@@ -35,6 +40,11 @@ router.get('/consult', async (req, res) => {
 
     if (idUser === undefined) {
         res.redirect('/login');
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
     }
 
     let listUsers = await userManagement.getUserList();
@@ -62,6 +72,11 @@ router.get('/edit/:userId', async (req, res) => {
 
     if (idUser === undefined) {
         res.redirect('/login');
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
     }
 
     let user = await userManagement.getUserById(userId);
@@ -99,10 +114,16 @@ router.get('/edit/:userId', async (req, res) => {
 /* POST create new user. */
 router.post('/create/newUser', async (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
     }
 
     let rolId = req.body.rolId;
@@ -129,11 +150,17 @@ router.post('/create/newUser', async (req, res) => {
 /* POST delete user by id. */
 router.post('/delete/:userId', async (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
     let userId = req.params.userId;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
     }
 
     if (userId == 1 || userId == 2 || userId == 3) {
@@ -150,11 +177,18 @@ router.post('/delete/:userId', async (req, res) => {
 /* POST update user by id. */
 router.post('/update/:userId', async (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
+
     const userId = req.params.userId;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
     }
 
     let numberIdentification = req.body.identification;
@@ -169,9 +203,16 @@ router.post('/update/:userId', async (req, res) => {
 /*GET dowload report of all users. */
 router.get('/dowload', async (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
+
 
     if (idUser === undefined) {
         res.redirect('/login');
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
     }
 
     await generatorReportService.generateUsersReport(idUser);
