@@ -3,7 +3,7 @@ var router = express.Router();
 const dashboardService = require("../services/dashboardService")
 const axios = require("axios");
 
-var cacheWeatherInfo = { icon: "", temp: "", lasDate: new Date().setTime(new Date() - (61 * 60 * 1000)) }
+var cacheWeatherInfo = { icon: "04n", temp: "16", lasDate: new Date().setTime(new Date() - (61 * 60 * 1000)) }
 
 
 /* GET main page. */
