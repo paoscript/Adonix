@@ -72,11 +72,15 @@ async function getWeatherInformation() {
     if (hourCacheWeather < hourNow) {
         await axios.request(options).then(async function (response) {
 
-            cacheWeatherInfo.icon = response.data.weather[0].icon;
-            cacheWeatherInfo.temp = Math.ceil(response.data.main.temp) + 1
-            cacheWeatherInfo.lasDate = new Date();
+            if (response.status == 200) {
+                cacheWeatherInfo.icon = response.data.weather[0].icon;
+                cacheWeatherInfo.temp = Math.ceil(response.data.main.temp) + 1
+                cacheWeatherInfo.lasDate = new Date();
 
-            console.log("Weather data cached correctly: " + cacheWeatherInfo);
+                console.log("Weather data cached correctly: " + cacheWeatherInfo);
+            }
+
+            console.error("error when obtaining data from the weather api: ", response.data);
 
         }).catch(function (error) {
             console.error("error when obtaining data from the weather api: ",error);
