@@ -26,8 +26,11 @@
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="password" id="password" name="password" class="form-control form-control-lg"
+                    <div class="input-group mb-3">
+                      <input type="password" id="password" name="password" class="form-control form-control-lg mr-2"
                       placeholder="Enter your password" />
+                      <button class="btn btn-outline-secondary fa fa-eye" onclick="seePassword()" type="button" id="buttonEye"></button>
+                    </div>
                     <label class="form-label" for="password">Password</label>
                   </div>
 
@@ -72,6 +75,20 @@
       window.onload = setTimeout(() => {
         $("#errorInLogin").modal('show');
       }, 1000);
+    }
+  }
+  function seePassword() {
+    var inputPassword = document.getElementById("password");
+    var buttonEye = document.getElementById("buttonEye");
+
+    if (inputPassword.type == "password") {
+      inputPassword.type = "text";
+      buttonEye.classList.add("fa-eye-slash");
+      buttonEye.classList.remove("fa-eye");
+    } else {
+      inputPassword.type = "password";
+      buttonEye.classList.add("fa-eye");
+      buttonEye.classList.remove("fa-eye-slash");
     }
   }
 </script>
