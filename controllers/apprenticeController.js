@@ -69,6 +69,7 @@ router.get('/consult', async (req, res) => {
 /* POST create new apprentice. */
 router.post('/create/newApprentice', async (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     if (idUser === undefined) {
         res.redirect('/login');
@@ -79,12 +80,78 @@ router.post('/create/newApprentice', async (req, res) => {
         institution, specility, nameBoss, ccmsBoss, category, yielded, state, contratStartDate, company, endDateStudy, productiveStartDate,
         productiveEndDate, countDays, phoneNumber } = req.body;
 
-    await apprenticesService.createNewApprentice(identification, name, idCCMS, sgva, group, ceco, jobDescription, relatedPosition, 
-                                                    payment, birthDay, address, email, eps, city, institution, specility, nameBoss, 
-                                                    ccmsBoss, category, yielded, state, contratStartDate, endDateStudy, productiveStartDate, 
-                                                    productiveEndDate, countDays, phoneNumber, company, idUser);
+    let existApprentice = await apprenticesService.getApprenticeByNumberIdentification(identification) != null
 
-    res.redirect('/apprentices/consult/');
+    console.log(existApprentice)
+
+    if (existApprentice != null) {
+
+        let apprentice = {
+            "app_identification": "",
+            "app_name": name,
+            "app_ccms_id": idCCMS,
+            "app_sgva": sgva,
+            "app_group": group,
+            "app_ceco_id": ceco,
+            "app_job_description": jobDescription,
+            "app_related_position": relatedPosition,
+            "app_sustaninig_support": payment,
+            "app_birthday": birthDay,
+            "app_email": email,
+            "app_eps": eps,
+            "app_city": city,
+            "app_institutions": institution,
+            "app_speciality": specility,
+            "app_name_boss": nameBoss,
+            "app_id_ccms_boss": ccmsBoss,
+            "app_category": category,
+            "app_yielded": yielded,
+            "app_state": state,
+            "app_contract_start_date": contratStartDate,
+            "app_end_date_study": endDateStudy, 
+            "app_productive_start_date": productiveStartDate, 
+            "app_productive_end_date": productiveEndDate, 
+            "app_count_days": countDays,
+            "app_phone_number": phoneNumber,
+            "app_company": company
+        }
+
+        let svgaOptionsResult = orderOptions(sgva, stateOptions);
+        let yieldedOptionsResult = orderOptions(yielded, yieldedOptions);
+        let categoryOptionsResult = orderOptions(category, categoryOptions);
+        let stateOptionsResult = orderOptions(state, stateOptions);
+        let listCityResult = orderOptions(city, listCity)
+    
+        res.render('apprentices_edit',
+            {
+                title: 'Create Apprentice',
+                isWithInterface: true,
+                isHasMenuUserPermition: idRolUser == 1 ? true : false,
+                apprentice: apprentice,
+                contratStartDate: contratStartDate,
+                endDateStudy: endDateStudy,
+                productiveStartDate: productiveStartDate,
+                productiveEndDate: productiveEndDate, 
+                birthday: birthDay,
+                svgaOptions: svgaOptionsResult,
+                yieldedOptions: yieldedOptionsResult,
+                categoryOptions: categoryOptionsResult,
+                stateOptions: stateOptionsResult,
+                listCity: listCityResult,
+                alerta: true,
+                url: "/apprentices/create/newApprentice"
+            }
+        );
+        return;
+    } else {
+        await apprenticesService.createNewApprentice(identification, name, idCCMS, sgva, group, ceco, jobDescription, relatedPosition, 
+            payment, birthDay, address, email, eps, city, institution, specility, nameBoss, 
+            ccmsBoss, category, yielded, state, contratStartDate, endDateStudy, productiveStartDate, 
+            productiveEndDate, countDays, phoneNumber, company, idUser);
+
+        res.redirect('/apprentices/consult/');
+    }
+
 });
 
 
@@ -142,7 +209,9 @@ router.get('/edit/:apprenticeId', async (req, res) => {
             yieldedOptions: yieldedOptionsResult,
             categoryOptions: categoryOptionsResult,
             stateOptions: stateOptionsResult,
-            listCity: listCityResult
+            listCity: listCityResult,
+            alerta: false,
+            url: "/apprentices/update/" + apprentice.app_id
         }
     );
 });

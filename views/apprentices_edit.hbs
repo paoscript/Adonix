@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Update apprentice</h4>
-            <form class="form-sample" id="updateApprentice" action="/apprentices/update/{{apprentice.app_id}}"
+            <form class="form-sample" id="updateApprentice" action="{{url}}"
                 method="post">
                 <p class="card-description">
                     Please fill in the following information 📝
@@ -435,10 +435,42 @@
                 </div>
             </div>
         </div>
+
+        <!-- Error Number Apprentice -->
+        <div class="modal fade" id="numberApprenticeError" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error in the field "Identification".</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>There is already an apprentice with the same identification number</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
+
+    mostrarAlerta({{alerta}})
+
+    function mostrarAlerta(activar) {
+        if (activar == true) {
+            window.onload = setTimeout(() => {
+                $("#numberApprenticeError").modal('show');
+            }, 1000);
+        }
+    }
+
     function enviarFormulario() {
         var identification = document.getElementById("identification");
         var idCCMS = document.getElementById("idCcms");
@@ -611,4 +643,6 @@
         document.getElementById('countDays').setAttribute('value', contdias + 1)
 
     }
+
+
 </script>
