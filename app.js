@@ -11,6 +11,7 @@ var logoutController = require('./controllers/logoutController')
 var apprenticeController = require('./controllers/apprenticeController')
 var usersController = require('./controllers/usersController')
 var settingController = require('./controllers/settingController')
+var modificationController = require('./controllers/modificationController')
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use('/logout', logoutController)
 app.use('/apprentices', apprenticeController)
 app.use('/users', usersController)
 app.use('/settings', settingController)
+app.use('/modifications', modificationController)
 
 
 // catch 404 and forward to error handler

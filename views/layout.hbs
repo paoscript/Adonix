@@ -25,11 +25,15 @@
     <!-- Front Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
 <div class="container-scroller">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 
     {{#if isWithInterface}}
 
@@ -145,10 +149,10 @@
                     </a>
                     <div class="collapse" id="form-elements">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"><a class="nav-link" href="modifications/create_modification.html">Create</a>
+                            <li class="nav-item"><a class="nav-link" href="/modifications/create/">Create</a>
                             </li>
                             <li class="nav-item"><a class="nav-link"
-                                                    href="modifications/consult_modification.html">Consult</a></li>
+                                                    href="/modifications/consult/">Consult</a></li>
                         </ul>
                     </div>
                 </li>
@@ -230,21 +234,24 @@
                 -->
                 <!--USERS-->
 
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#users" aria-expanded="false"
-                       aria-controls="users">
-                        <i class="fa-solid fa-user-group">&nbsp&nbsp&nbsp&nbsp</i>
-                        <span class="menu-title">Users</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="users">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" href="/users/create/"> Create </a></li>
-                            <li class="nav-item"> <a class="nav-link" href="/users/consult/"> Consult </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                {{#if isHasMenuUserPermition}}
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#users" aria-expanded="false"
+                        aria-controls="users">
+                            <i class="fa-solid fa-user-group">&nbsp&nbsp&nbsp&nbsp</i>
+                            <span class="menu-title">Users</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="users">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="/users/create/"> Create </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/users/consult/"> Consult </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                {{/if}}
 
                 <!-- ERRORS-->
                 <!--
@@ -309,6 +316,7 @@
 <script src="/js/dashboard.js"></script>
 <script src="/js/Chart.roundedBarCharts.js"></script>
 <!-- End custom js for this page-->
+
 </body>
 
 </html>

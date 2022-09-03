@@ -1,0 +1,27 @@
+
+#searchElementContainer {
+    width: 50%;
+    margin-right: 50%;
+}
+
+#tableConsult {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.invalid {
+    border: 2px solid #ff0000;
+}
+
+
+@media (max-width: 600px) {
+    #searchElementContainer {
+        width: 90%;
+        margin-right: 5%;
+    }
+
+    #tableConsult {
+        margin-left: 3%;
+        margin-right: 3%;
+    }
+}

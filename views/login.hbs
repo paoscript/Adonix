@@ -1,17 +1,14 @@
 <section class="vh-100" style="background-color: #7e2484;">
-  <div class="container py-5 h-100">
+  <div class="container py-7 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-xl-10">
         <div class="card" style="border-radius: 1rem;">
           <div class="row g-0">
-            <div class="col-md-6 col-lg-5 d-none d-md-block">
-              <img
-                src="/images/imagen_login_compress_recort.jpg"
-                alt="login form"
-                class="img-fluid" style="border-radius: 1rem 0 0 1rem;"
-              />
+            <div class="col-md-6 col-lg-6 d-none d-md-block">
+              <img src="/images/imagen_login_compress_recort.jpg" alt="login form" class="img-fluid"
+                style="border-radius: 1rem 0 0 1rem;" />
             </div>
-            <div class="col-md-5 col-lg-6 d-flex align-items-center">
+            <div class="col-md-5 col-lg-5 d-flex align-items-center">
               <div class="card-body p-4 p-lg-4 text-black">
 
                 <form action="/login" method="post">
@@ -23,12 +20,17 @@
                   <h4 class="fw-bold mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h4>
 
                   <div class="form-outline mb-4">
-                    <input type="number" id="numberIdentification" name="numberIdentification" class="form-control form-control-lg" placeholder="Enter your number identification" />
+                    <input type="number" id="numberIdentification" name="numberIdentification"
+                      class="form-control form-control-lg" placeholder="Enter your number identification" />
                     <label class="form-label" for="numberIdentification">Number Identification</label>
                   </div>
 
                   <div class="form-outline mb-4">
-                    <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Enter your password" />
+                    <div class="input-group mb-3">
+                      <input type="password" id="password" name="password" class="form-control form-control-lg mr-2"
+                      placeholder="Enter your password" />
+                      <button class="btn btn-outline-secondary fa fa-eye" onclick="seePassword()" type="button" id="buttonEye"></button>
+                    </div>
                     <label class="form-label" for="password">Password</label>
                   </div>
 
@@ -44,3 +46,49 @@
     </div>
   </div>
 </section>
+
+<!-- Error Login -->
+<div class="modal fade" id="errorInLogin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Error in login.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Number Identification or/and password incorrects.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  mostrarAlerta({{ alerta }})
+
+  function mostrarAlerta(activar) {
+    if (activar == true) {
+      window.onload = setTimeout(() => {
+        $("#errorInLogin").modal('show');
+      }, 1000);
+    }
+  }
+  function seePassword() {
+    var inputPassword = document.getElementById("password");
+    var buttonEye = document.getElementById("buttonEye");
+
+    if (inputPassword.type == "password") {
+      inputPassword.type = "text";
+      buttonEye.classList.add("fa-eye-slash");
+      buttonEye.classList.remove("fa-eye");
+    } else {
+      inputPassword.type = "password";
+      buttonEye.classList.add("fa-eye");
+      buttonEye.classList.remove("fa-eye-slash");
+    }
+  }
+</script>

@@ -28,7 +28,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Identification</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="CC or TI" name="identification" id="identification"/>
+                                <input type="text" class="form-control" placeholder="CC or TI" name="identification" id="identification" onchange="validate('identification')"/>
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">ID CCMS</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" placeholder="Number ID" name="idCCMS" itemid="idCCMS"
+                                <input type="number" class="form-control" placeholder="Number ID" name="idCCMS" itemid="idCCMS" onchange="validate('idCCMS')"
                                        id="idCcms" required />
                             </div>
                             <div class="invalid-feedback">
@@ -50,7 +50,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Complete name" id="name" name="name" />
+                                <input type="text" class="form-control" placeholder="Complete name" id="name" name="name" onchange="validate('name')"/>
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Group</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" placeholder="Number" id="group" name="group" />
+                                <input type="number" class="form-control" placeholder="Number" id="group" name="group" onchange="validate('group')"/>
                             </div>
                         </div>
                     </div>
@@ -69,9 +69,9 @@
                             <label class="col-sm-3 col-form-label">SGVA</label>
                             <div class="col-sm-9">
                                 <select class="form-control" id="sgva" name="sgva">
-                                    <option value="1">Yes</option>
-                                    <option value="2">No</option>
-                                    <option value="3">Pending</option>
+                                    {{#each svgaOptions}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">CECO</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" placeholder="Number" name="ceco" id="ceco" />
+                                <input type="number" class="form-control" placeholder="Number" name="ceco" id="ceco" onchange="validate('ceco')"/>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Job Description</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Description" name="jobDescription" id="jobDescription"/>
+                                <input type="text" class="form-control" placeholder="Description" name="jobDescription" id="jobDescription" onchange="validate('jobDescription')"/>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Related Position</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Related" name="relatedPosition" />
+                                <input type="text" class="form-control" placeholder="Related" name="relatedPosition" id="relatedPosition" onchange="validate('relatedPosition')"/>
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Payment</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" placeholder="$ SMLV" name="payment" id="payment" />
+                                <input type="number" class="form-control" placeholder="$ SMLV" name="payment" id="payment" onchange="validate('payment')"/>
                             </div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">BirthDay</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" name="birthDay" id="birthday"/>
+                                <input type="date" class="form-control" name="birthDay" id="birthday" onchange="validate('birthday')"/>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Address</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Address" name="address" id="address"/>
+                                <input type="text" class="form-control" placeholder="Address" name="address" id="address" onchange="validate('address')"/>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">E-Mail</label>
                             <div class="col-sm-9">
-                                <input type="email" class="form-control" placeholder="E-mail"  name="email" id="email"/>
+                                <input type="email" class="form-control" placeholder="E-mail"  name="email" id="email" onchange="validate('email')"/>
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">EPS</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="EPS" name="eps" id="eps"/>
+                                <input type="text" class="form-control" placeholder="EPS" name="eps" id="eps" onchange="validate('eps')"/>
                             </div>
                         </div>
                     </div>
@@ -152,7 +152,11 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">City</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="City" name="city" id="city" />
+                                <select class="form-control" name="city" id="city">
+                                    {{#each listCity}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -162,7 +166,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Institutions</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Institutions" name="institution" id="institution" />
+                                <input type="text" class="form-control" placeholder="Institutions" name="institution" id="institution" onchange="validate('institution')"/>
                             </div>
                         </div>
                     </div>
@@ -170,7 +174,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Specility</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Specility" name="specility" id="specility"/>
+                                <input type="text" class="form-control" placeholder="Specility" name="specility" id="specility" onchange="validate('specility')"/>
                             </div>
                         </div>
                     </div>
@@ -180,7 +184,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Name Boss</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" placeholder="Direct Boss" name="nameBoss" id="nameBoss"/>
+                                <input type="text" class="form-control" placeholder="Direct Boss" name="nameBoss" id="nameBoss" onchange="validateInput('nameBoss')"/>
                             </div>
                         </div>
                     </div>
@@ -188,7 +192,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">ID CCMS Boss</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" placeholder=" ID CCMS Boss" name="ccmsBoss" id="ccmsBoss" />
+                                <input type="number" class="form-control" placeholder=" ID CCMS Boss" name="ccmsBoss" id="ccmsBoss" onchange="validateInput('ccmsBoss')"/>
                             </div>
                         </div>
                     </div>
@@ -199,9 +203,9 @@
                             <label class="col-sm-3 col-form-label">Category</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="category" id="category">
-                                    <option>Technical</option>
-                                    <option>Technologist</option>
-                                    <option>Professional</option>
+                                    {{#each categoryOptions}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -211,9 +215,9 @@
                             <label class="col-sm-3 col-form-label">Yielded</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="yielded" id="yielded">
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                    <option>Studing</option>
+                                    {{#each yieldedOptions}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -225,9 +229,9 @@
                             <label class="col-sm-3 col-form-label">State</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="state" id="state">
-                                    <option>Lective</option>
-                                    <option>Productive</option>
-                                    <option>University</option>
+                                    {{#each stateOptions}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>
@@ -236,7 +240,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Company</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="company" id="company" />
+                                <input type="text" class="form-control" name="company" id="company" onchange="validateInput('company')"/>
                             </div>
                         </div>
                     </div>
@@ -246,7 +250,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Contract Start Date</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" name="contratStartDate" id="contratStartDate" />
+                                <input type="date" class="form-control" name="contratStartDate" id="contratStartDate" onchange="validateDates();validateInput('contratStartDate'); calcularDias() "/>
                             </div>
                         </div>
                     </div>
@@ -254,7 +258,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">End Date Of Study</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" name="endDateStudy" id="endDateStudy"/>
+                                <input type="date" class="form-control" name="endDateStudy" id="endDateStudy" onchange="validateDates();validateInput('endDateStudy'); calcularDias()"/>
                             </div>
                         </div>
                     </div>
@@ -264,15 +268,15 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Productive Start Date</label>
                             <div class="col-sm-9">
-                                <input type="date" class="form-control" name="productiveStartDate" id="productiveStartDate"/>
+                                <input type="date" class="form-control" name="productiveStartDate" id="productiveStartDate" onchange="validateDates();validateInput('productiveStartDate'); calcularDias()"/>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Productive End Date</label>
-                            <div class="col-sm-9">
-                                <input type="date" class="form-control" name="productiveEndDate" id="productiveEndDate" onchange="calcularDias()"/>
+                            <div class="col-sm-9">  
+                                <input type="date" class="form-control" name="productiveEndDate" id="productiveEndDate" onchange="validateDates();validateInput('productiveEndDate'); calcularDias()"/>
                             </div>
                         </div>
                     </div>
@@ -282,7 +286,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Count Days</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" readonly name="countDays" id="countDays"/>
+                                <input type="number" class="form-control" readonly name="countDays" id="countDays" readonly/>
                             </div>
                         </div>
                     </div>
@@ -290,7 +294,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Phone Number</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"/>
+                                <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" onchange="validateInput('phoneNumber')"/>
                             </div>
                         </div>
                     </div>
@@ -359,12 +363,212 @@
                 </div>
             </div>
         </div>
+
+        <!-- Error Form -->
+        <div class="modal fade" id="formInvalid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Form Incomplete.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some fields are not filled in, please validate.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Form -->
+        <div class="modal fade" id="dateError" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error in date assignment.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Error in dates, Please validate the dates entered, they must comply with the following rules:</p>
+                        <p>1. Contract Start Date cannot be greater than End Date Of Study.</p>
+                        <p>2. End Date Of Study cannot be greater than Productive Start Date.</p>
+                        <p>3. Productive Start Date cannot be greater than Productive End Date.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     function enviarFormulario() {
-        document.getElementById("createNewApprentice").submit();
+        var identification = document.getElementById("identification");
+        var idCCMS = document.getElementById("idCcms");
+        var name = document.getElementById("name");
+        var group = document.getElementById("group");
+        var ceco = document.getElementById("ceco");
+        var jobDescription = document.getElementById("jobDescription");
+        var relatedPosition = document.getElementById("relatedPosition");
+        var payment = document.getElementById("payment");
+        var birthday = document.getElementById("birthday");
+        var address = document.getElementById("address");
+        var email = document.getElementById("email");
+        var eps = document.getElementById("eps");
+        var institution = document.getElementById("institution");
+        var specility = document.getElementById("specility");
+        var nameBoss = document.getElementById("nameBoss");
+        var ccmsBoss = document.getElementById("ccmsBoss");
+        var company = document.getElementById("company");
+        var contratStartDate = document.getElementById("contratStartDate");
+        var endDateStudy = document.getElementById("endDateStudy");
+        var productiveStartDate = document.getElementById("productiveStartDate");
+        var productiveEndDate = document.getElementById("productiveEndDate");
+        var phoneNumber = document.getElementById("phoneNumber");
+
+        var isFormValid = true;
+
+        if (identification.value == "") {
+            identification.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (idCCMS.value == "") {
+            idCCMS.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (name.value == "") {
+            name.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (group.value == "") {
+            group.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (ceco.value == "") {
+            ceco.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (jobDescription.value == "") {
+            jobDescription.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (relatedPosition.value == "") {
+            relatedPosition.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (payment.value == "") {
+            payment.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (birthday.value == "") {
+            birthday.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (address.value == "") {
+            address.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (email.value == "") {
+            email.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (eps.value == "") {
+            eps.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (institution.value == "") {
+            institution.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (specility.value == "") {
+            specility.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (nameBoss.value == "") {
+            nameBoss.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (ccmsBoss.value == "") {
+            ccmsBoss.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (company.value == "") {
+            company.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (contratStartDate.value == "") {
+            contratStartDate.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (endDateStudy.value == "") {
+            endDateStudy.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (productiveStartDate.value == "") {
+            productiveStartDate.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (productiveEndDate.value == "") {
+            productiveEndDate.classList.add("invalid");
+            isFormValid = false;
+        }
+        if (phoneNumber.value == "") {
+            phoneNumber.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        var isValidDates = validateDates();
+
+        if (isValidDates) {
+            if (isFormValid ) {
+                document.getElementById("createNewApprentice").submit();
+            } else {
+                $("#formInvalid").modal('show');
+            }
+        }
+    }
+
+    function validateInput(inputId) {
+        var inputToValidate = document.getElementById(inputId);
+
+        if (inputToValidate.value == "") {
+            inputToValidate.classList.add("invalid");
+        } else {
+            inputToValidate.classList.remove("invalid")
+        }
+    }
+
+    function validateDates() {
+        var contratStartDate = document.getElementById("contratStartDate");
+        var endDateStudy = document.getElementById("endDateStudy");
+        var productiveStartDate = document.getElementById("productiveStartDate");
+        var productiveEndDate = document.getElementById("productiveEndDate");
+
+        var fechaContratStart = new Date(contratStartDate.value + 'T00:00');
+        var fechaSturdyEnd = new Date(endDateStudy.value + 'T00:00');
+        var fechaProductiveStart = new Date(productiveStartDate.value + 'T00:00');
+        var fechaProductiveEnd = new Date(productiveEndDate.value + 'T00:00');
+
+        if (fechaContratStart > fechaSturdyEnd || fechaSturdyEnd > fechaProductiveStart || fechaProductiveStart > fechaProductiveEnd) {
+            contratStartDate.classList.add("invalid");
+            endDateStudy.classList.add("invalid");
+            productiveStartDate.classList.add("invalid");
+            productiveEndDate.classList.add("invalid");
+
+            $("#dateError").modal('show');
+
+            return false;
+        }
+
+        return true;
     }
 
     function calcularDias() {
@@ -372,6 +576,11 @@
         var fechafin = new Date(document.getElementById('productiveEndDate').value + 'T00:00');
         var diasdif= fechafin.getTime()-fechaini.getTime();
         var contdias = Math.round(diasdif/(1000*60*60*24));
+
+        console.log(fechaini);
+        console.log(fechafin);
+        console.log(diasdif);
+        console.log(contdias);
         
         var inputProductiveEndDate = document.getElementById('productiveEndDate');
 

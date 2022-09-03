@@ -21,7 +21,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Identification</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" placeholder="CC or TI" name="identification" id="identification" />
+                                    <input type="text" class="form-control" placeholder="CC or TI" name="identification" id="identification" onchange="validateInput('identification')" />
                                 </div>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Password</label>
                                 <div class="col-sm-8">
-                                    <input type="password" class="form-control" placeholder="Password" id="PasswordUser" name="password" id="password"
+                                    <input type="password" class="form-control" placeholder="Password" name="password" id="password" onchange="validateInput('password')"
                                         required />
                                 </div>
                                 <div class="invalid-feedback">
@@ -43,7 +43,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Name</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" placeholder="Complete name" name="name" id="name"/>
+                                    <input type="text" class="form-control" placeholder="Complete name" name="name" id="name" onchange="validateInput('name')"/>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Email</label>
                                 <div class="col-sm-8">
-                                    <input type="email" class="form-control" placeholder="Email" name="email" id="email"/>
+                                    <input type="email" class="form-control" placeholder="Email" name="email" id="email" onchange="validateInput('email')"/>
                                 </div>
                             </div>
                         </div>
@@ -61,10 +61,10 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Role</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" id="rolId" name="rolId">
-                                        <option value="1">Administrator</option>
-                                        <option value="2">Manager</option>
-                                        <option value="3">Employee</option>
+                                    <select class="form-control" id="rolId" name="rolId" onchange="validateInput('rolId')">
+                                        {{#each roleList}}
+                                            <option value="{{this}}">{{this}}</option>
+                                        {{/each}}
                                     </select>
                                 </div>
                             </div>
@@ -141,11 +141,80 @@
             </div>
         </div>
 
+        <!-- Error Form -->
+        <div class="modal fade" id="formInvalid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Form Incomplete.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Some fields are not filled in, please validate.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
     </div>
 </div>
 
 <script>
     function enviarFormulario() {
-        document.getElementById("createNewUser").submit();
+
+        var identification = document.getElementById("identification");
+        var password = document.getElementById("password");
+        var name= document.getElementById("name");
+        var email = document.getElementById("email");
+        var rol = document.getElementById("rolId");
+
+        var isFormValid = true;
+
+        if (identification.value == "") {
+            identification.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (password.value == "") {
+            password.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (name.value == "") {
+            name.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (email.value == "") {
+            email.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (rol.value == "") {
+            rol.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (isFormValid) {
+            document.getElementById("createNewUser").submit();
+        } else {
+            $("#formInvalid").modal('show');
+        }
     }
+
+    function validateInput(inputId) {
+       var inputToValidate = document.getElementById(inputId);
+
+       if(inputToValidate.value == "") {
+            inputToValidate.classList.add("invalid");
+       } else {
+            inputToValidate.classList.remove("invalid")
+       }
+    }
+
 </script>

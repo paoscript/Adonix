@@ -1,0 +1,247 @@
+<!-- Formulario -->
+<div class="col-11 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Create a new Modification</h4>
+            <form class="form-sample" id="createNewModification" action="/modifications/create/newModification" method="post">
+                <p class="card-description">
+                    Please fill in the following information 📝
+                </p>
+                <br>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Modification Type</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="typeModification" name="typeModification" onchange="validateInput('typeModification')">
+                                    {{#each listOptionsTypeModification}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Number Identification of Apprentice</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" placeholder="Document ID" name="documentId" onchange="validateInput('documentId')"
+                                       id="documentId" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Date Init</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" placeholder="mm/dd/yyyy" id="dateStart" name="dateStart" onchange="calcularDias(); validateInput('dateStart'); validateDates()"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Date End</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" placeholder="Number" id="dateEnd" name="dateEnd" onchange="calcularDias(); validateInput('dateEnd'); validateDates()"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Count Days</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" placeholder="Count Days" name="countDays" id="countDays" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="form-group row">
+                        <div class="container p-10">
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Cancel</button>
+                        </div>
+                    </div>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <div class="form-group row">
+                        <div class="container p-10">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#submitModal">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+
+        </div>
+
+        <!-- Modals-->
+
+        <!-- Cancel -->
+        <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cancel Record</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to cancel the creation of the current record?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="window.location.href='/'">Cancel Creation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Submit Record</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to send the current record?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="enviarFormulario()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Form -->
+        <div class="modal fade" id="formInvalid" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Form Incomplete.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some fields are not filled in, please validate.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Form -->
+        <div class="modal fade" id="dateError" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Error in date assignment.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Error in dates, Date Init must not be greater than Date End.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function enviarFormulario() {
+        var typeModification = document.getElementById("typeModification");
+        var documentId = document.getElementById("documentId");
+        var dateStart = document.getElementById("dateStart");
+        var dateEnd = document.getElementById("dateEnd");
+
+        var isFormValid = true;
+
+        if (typeModification.value == "") {
+            typeModification.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (documentId.value == "") {
+            documentId.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (dateStart.value == "") {
+            dateStart.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        if (dateEnd.value == "") {
+            dateEnd.classList.add("invalid");
+            isFormValid = false;
+        }
+
+        var isValidDates = validateDates();
+
+        if (isValidDates) {
+            if (isFormValid ) {
+                document.getElementById("createNewModification").submit();
+            } else {
+                $("#formInvalid").modal('show');
+            }
+        }
+    }
+
+    function validateInput(inputId) {
+        var inputToValidate = document.getElementById(inputId);
+
+        if (inputToValidate.value == "") {
+            inputToValidate.classList.add("invalid");
+        } else {
+            inputToValidate.classList.remove("invalid")
+        }
+    }
+
+    function calcularDias() {
+        var fechaini = new Date(document.getElementById('dateStart').value + 'T00:00');
+        var fechafin = new Date(document.getElementById('dateEnd').value + 'T00:00');
+        var diasdif= fechafin.getTime()-fechaini.getTime();
+        var contdias = Math.round(diasdif/(1000*60*60*24));
+        
+        document.getElementById('countDays').setAttribute('value', contdias + 1) 
+    }
+
+    function validateDates() {
+        var dateStart = document.getElementById('dateStart');
+        var dateEnd = document.getElementById('dateEnd');
+
+        var fechaini = new Date(dateStart.value + 'T00:00');
+        var fechafin = new Date(dateEnd.value + 'T00:00');
+
+        if (fechaini > fechafin) {
+            dateStart.classList.add("invalid");
+            dateEnd.classList.add("invalid");
+
+            $("#dateError").modal('show');
+
+            return false;
+        }
+
+        return true;
+    }
+</script>

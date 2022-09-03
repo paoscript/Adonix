@@ -1,92 +1,144 @@
 var express = require('express');
 var router = express.Router();
 const userManagement = require("../services/userManager");
+const generatorReportService = require("../services/generatorReportService");
+const fs = require('fs')
+const path = require('path')
+
+var roleList = ["Employee","Administrator", "Manager"];
 
 /* GET create user page. */
-router.get('/create', function(req, res, next) {
+router.get('/create', (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     if (idUser === undefined) {
         res.redirect('/login');
-    } else {
-        res.render('users_create', { title: 'Create New User', isWithInterface: true });
+        return;
     }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
+    }
+    
+    res.render('users_create', 
+        { 
+            title: 'Create New User', 
+            isWithInterface: true,
+            isHasMenuUserPermition: idRolUser == 1 ? true : false,   
+            roleList: roleList
+        }
+    );
+
 });
 
-/* GET consult users page. */
-router.get('/consult', async function(req, res, next) {
+/* GET consult user page. */
+router.get('/consult', async (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
+
+    if (idUser === undefined) {
+        res.redirect('/login');
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
+    }
 
     let listUsers = await userManagement.getUserList();
 
-    let pagination = []
-
-    if (listUsers.length > 0) {
-        let cantidad = Math.ceil(listUsers.length / 10)
-
-        for (let index = 0; index < cantidad; index++) {
-            pagination.push({number: index + 1})            
+    res.render('users_consult', 
+        { 
+            title: 'Consult Users', 
+            isWithInterface: true,
+            isHasMenuUserPermition: idRolUser == 1 ? true : false,
+            hasDowloadRecordPermition: idRolUser == 1 || idRolUser == 2 ? true : false,
+            countRecords: listUsers.length, 
+            listUsers: listUsers, 
         }
-    }
-
-    if (idUser === undefined) {
-        res.redirect('/login');
-    } else {
-        res.render('users_consult', { title: 'Consult Users', isWithInterface: true, countRecords: listUsers.length, listUsers: listUsers, pagination: pagination});
-    }
+    );
 });
 
 
 
 
-/* GET create user page. */
-router.get('/edit/:userId', async function(req, res, next) {
+/* GET edit user by id page. */
+router.get('/edit/:userId', async (req, res) => {
     let idUser = req.cookies.idUser;
-    const userId = req.params.userId;
-    let user = await userManagement.getUserById(userId);
-    let userRol = ""
-    
-    console.log(user);
+    let idRolUser = req.cookies.idRole;
+    let userId = req.params.userId;
 
+    if (idUser === undefined) {
+        res.redirect('/login');
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
+    }
+
+    let user = await userManagement.getUserById(userId);
+    
     if(user === "") {
         res.redirect('/users/edit/errors/error-404.html');
         return;
     }
 
-    switch (user.use_rol_id) {
-        case 1:
-            userRol = "Administrator"
-            break;
+    let roleName = "";
+    let rolId = user.use_rol_id
+
+    if(rolId == 1) {
+        roleName = "Administrator";
+    } else if(rolId == 2){
+        roleName = "Manager";
+    } else if (rolId == 3) {
+        roleName = "Employee";
+    }
+
+    let roleListResult = orderOptions(roleName, roleList);
     
-        case 2:
-            userRol = "Manager"
-            break;
+    res.render('users_edit', 
+        { 
+            title: 'Edit User', 
+            isWithInterface: true,
+            isHasMenuUserPermition: idRolUser == 1 ? true : false,  
+            user: user, 
+            roleList: roleListResult
+        }
+    );
 
-        case 3:
-            userRol = "Employee"
-            break;
-    }
-
-    if (idUser === undefined) {
-        res.redirect('/login');
-    } else {
-        res.render('users_edit', { title: 'Edit User', isWithInterface: true, user: user, rolName: userRol});
-    }
 });
 
-/* GET create user page. */
-router.post('/create/newUser', async function(req, res, next) {
+/* POST create new user. */
+router.post('/create/newUser', async (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
     }
 
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
+    }
+
+    let rolId = req.body.rolId;
+
+    if (rolId === "Administrator") {
+        rolId = 1;
+    } else if (rolId === "Manager") {
+        rolId = 2
+    } else if (rolId === "Employee") {
+        rolId = 3;
+    }
+
     let numberIdentification = req.body.identification;
     let password = req.body.password;
     let userName = req.body.name;
-    let rolId = req.body.rolId;
     let email = req.body.email;
 
     await userManagement.createUser(numberIdentification, userName, password, email, rolId);
@@ -95,35 +147,48 @@ router.post('/create/newUser', async function(req, res, next) {
 
 });
 
-/* GET create user page. */
-router.post('/delete/:userId', async function(req, res, next) {
+/* POST delete user by id. */
+router.post('/delete/:userId', async (req, res) => {
     let idUser = req.cookies.idUser;
-
-    const userId = req.params.userId;
+    let idRolUser = req.cookies.idRole;
+    let userId = req.params.userId;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
     }
 
-    if (userId == 1 || userId == 2 || userId == 8) {
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
+    }
+
+    if (userId == 1 || userId == 2 || userId == 3) {
         res.redirect('/users/consult/')
         return;
-    } else {
-        await userManagement.deleteUserById(userId)
-    }
+    } 
+
+    await userManagement.deleteUserById(userId)
+    
     res.redirect('/users/consult/')
 
 });
 
-/* GET create user page. */
-router.post('/update/:userId', async function(req, res, next) {
+/* POST update user by id. */
+router.post('/update/:userId', async (req, res) => {
     let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
+
     const userId = req.params.userId;
 
     if (idUser === undefined) {
         res.redirect('/login');
         return;
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
     }
 
     let numberIdentification = req.body.identification;
@@ -134,5 +199,46 @@ router.post('/update/:userId', async function(req, res, next) {
 
     res.redirect('/users/consult/')
 });
+
+/*GET dowload report of all users. */
+router.get('/dowload', async (req, res) => {
+    let idUser = req.cookies.idUser;
+    let idRolUser = req.cookies.idRole;
+
+
+    if (idUser === undefined) {
+        res.redirect('/login');
+    }
+
+    if (idRolUser != 1) {
+        res.redirect("/")
+        return
+    }
+
+    await generatorReportService.generateUsersReport(idUser);
+
+    let file = fs.readFileSync(path.join(__dirname, `../public/reports/${idUser}/users.xlsx`), 'binary');
+
+    res.setHeader('Content-Length', file.length);
+    res.setHeader('Content-disposition', 'attachment; filename=users.xlsx');
+    res.write(file, 'binary')
+
+    res.end();
+});
+
+/*FUCTIONS UTILS */
+
+/*Sorts the list of options and places the first parameter as the first option*/
+function orderOptions(first, listOptions) {
+    list = [first]
+
+    listOptions.forEach(element => {
+        if (element != first) {
+            list.push(element)
+        }
+    });
+
+    return list;
+}
 
 module.exports = router;

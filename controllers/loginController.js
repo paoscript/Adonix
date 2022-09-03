@@ -3,28 +3,45 @@ var router = express.Router();
 const userManagement = require("../services/userManager");
 
 /* GET login page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res) => {
     let idUser = req.cookies.idUser;
 
     if (idUser === undefined) {
-        res.render('login', {title: 'Welcome to Adonix! 🤩 🚀', isWithInterface: false});
-    } else {
-        res.redirect('/');
+        res.render('login', 
+            {
+                title: 'Welcome to Adonix! 🤩 🚀', 
+                isWithInterface: false
+            }
+        );
+        return;
     }
+
+    res.redirect('/');
+
 });
 
-router.post('/', async (req, res, next) => {
-    let idUser =  1//req.cookies.idUser;
+/*POST checks if the user can log in to the system.*/
+router.post('/', async (req, res) => {
+    
     let { numberIdentification, password} = req.body;
 
-    let isUserCorrect = await userManagement.validateLogin(numberIdentification, password);
+    let infoLogin = await userManagement.validateLogin(numberIdentification, password);
 
-    if (isUserCorrect) {
-        res.cookie('idUser', idUser)
-        res.redirect('/')
-    } else {
-        res.redirect('/');
-    }
+    if (!infoLogin.isLogin) {
+        res.render('login', 
+            {
+                title: 'Welcome to Adonix! 🤩 🚀', 
+                isWithInterface: false,
+                alerta: true
+            }
+        );
+        return;
+    } 
+
+    res.cookie('idUser', infoLogin.idUser);
+    res.cookie('idRole', infoLogin.rolId);
+
+    res.redirect('/');
 })
 
 module.exports = router;
